@@ -37,3 +37,5 @@ using System.Windows.Markup;
 
 [assembly: XmlnsPrefix("http://schemas.instrument.net/wpf/xaml/gui", "gui")]
 [assembly: XmlnsDefinition("http://schemas.instrument.net/wpf/xaml/gui", "Instrument.Gui.Controls.FloatDock")]
+[assembly: XmlnsDefinition("http://schemas.instrument.net/wpf/xaml/gui", "Instrument.Gui.Controls.FloatDock.Layout")]
+[assembly: XmlnsDefinition("http://schemas.instrument.net/wpf/xaml/gui", "Instrument.Gui.Controls.FloatDock.Controls")]

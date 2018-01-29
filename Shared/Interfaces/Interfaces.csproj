@@ -4,13 +4,12 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{915C5FAE-E1C0-43C8-ABBB-D40C69AC179E}</ProjectGuid>
+    <ProjectGuid>{DF8DC57E-18C4-4636-8849-24C56A4E1B61}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>Instrument.Gui.Controls.FloatDock</RootNamespace>
-    <AssemblyName>FloatDock</AssemblyName>
+    <RootNamespace>Instrument.Interfaces</RootNamespace>
+    <AssemblyName>Interfaces</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -35,36 +34,5 @@
   <PropertyGroup>
     <StartupObject />
   </PropertyGroup>
-  <ItemGroup>
-    <Compile Include="Controls\FloatPanelControl.cs" />
-    <Compile Include="DockManager.cs" />
-    <Compile Include="Interfaces\ILayoutContainer.cs" />
-    <Compile Include="Interfaces\ILayoutControl.cs" />
-    <Compile Include="Interfaces\ILayoutElement.cs" />
-    <Compile Include="Interfaces\ILayoutRoot.cs" />
-    <Compile Include="Layout\LayoutElement.cs" />
-    <Compile Include="Layout\LayoutPanel.cs" />
-    <Compile Include="Layout\LayoutRoot.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
-    <Reference Include="System" />
-    <Reference Include="System.Xaml" />
-    <Reference Include="WindowsBase" />
-  </ItemGroup>
-  <ItemGroup>
-    <Page Include="Themes\Generic.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\Shared\Utilities\Utilities.csproj">
-      <Project>{12C585E3-2659-4282-BF33-4A3B968CE8BC}</Project>
-      <Name>Utilities</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

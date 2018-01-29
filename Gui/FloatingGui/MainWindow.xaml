@@ -6,7 +6,9 @@
         Title="MainWindow" Height="500" Width="800">
     
     <gui:DockManager>
-        
+        <gui:LayoutPanel>
+            
+        </gui:LayoutPanel>
     </gui:DockManager>
     
 </Window>
