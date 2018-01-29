@@ -132,10 +132,6 @@ namespace Instrument.Gui.Controls.FloatDock
             }
         }
 
-        protected override void OnMouseRightButtonDown(MouseButtonEventArgs e)
-        {
-            LogicalTreeDumper.Dump(this);
-            VisualTreeDumper.Dump(this);
-        }
+        
     }
 }

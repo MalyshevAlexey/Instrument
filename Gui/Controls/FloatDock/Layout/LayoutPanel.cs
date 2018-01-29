@@ -1,26 +1,26 @@
 ﻿using Instrument.Gui.Controls.FloatDock.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Markup;
 
 namespace Instrument.Gui.Controls.FloatDock.Layout
 {
-    public class LayoutPanel : LayoutElement, ILayoutContainer
+    [ContentProperty("Children")]
+    public class LayoutPanel : LayoutGroup<UIElement>, ILayoutContainer
     {
-        public IEnumerable<ILayoutElement> Children => throw new NotImplementedException();
-
-        public int ChildrenCount => throw new NotImplementedException();
-
-        public void RemoveChild(ILayoutElement element)
+        public LayoutPanel()
         {
-            throw new NotImplementedException();
-        }
-
-        public void ReplaceChild(ILayoutElement oldElement, ILayoutElement newElement)
-        {
-            throw new NotImplementedException();
+            for (int i = 0; i < 3; i++)
+            {
+                Button btn = new Button() { Content = "Button " + i };
+                Children.Add(btn);
+            }
         }
     }
 }

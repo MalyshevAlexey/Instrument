@@ -57,14 +57,6 @@ namespace Instrument.Gui.Controls.FloatDock.Layout
 
         public int ChildrenCount => 1;
 
-        public void RemoveChild(ILayoutElement element)
-        {
-        }
-
-        public void ReplaceChild(ILayoutElement oldElement, ILayoutElement newElement)
-        {
-        }
-
         #endregion
     }
 }
