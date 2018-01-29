@@ -1,0 +1,12 @@
+﻿<Window x:Class="Instrument.Gui.FloatingGui.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:Instrument.Gui.FloatingGui"
+        xmlns:gui="http://schemas.instrument.net/wpf/xaml/gui"
+        Title="MainWindow" Height="500" Width="800">
+    
+    <gui:DockManager>
+        
+    </gui:DockManager>
+    
+</Window>
