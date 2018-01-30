@@ -1,9 +1,11 @@
-﻿using Instrument.Gui.Controls.FloatDock.Interfaces;
+﻿using Instrument.Gui.Controls.FloatDock.Controls;
+using Instrument.Gui.Controls.FloatDock.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace Instrument.Gui.Controls.FloatDock.Layout
 {
@@ -11,7 +13,8 @@ namespace Instrument.Gui.Controls.FloatDock.Layout
     {
         #region Variables
 
-        public ILayoutContainer RootPanel { get; set; }
+        public ILayoutContainer RootPanel { get; private set; }
+        public UIElement RootPanelControl { get; private set; }
 
         #endregion
 
@@ -57,6 +60,40 @@ namespace Instrument.Gui.Controls.FloatDock.Layout
 
         public int ChildrenCount => 1;
 
+        public void RemoveChild(ILayoutElement element)
+        {
+            if (element == RootPanel)
+                RootPanel = null;
+        }
+
+        public void ReplaceChild(ILayoutElement oldElement, ILayoutElement newElement)
+        {
+            if (oldElement == RootPanel)
+                RootPanel = (LayoutPanel)newElement;
+        }
+
         #endregion
+
+        public virtual void OnLayoutRootPanelChanged(LayoutPanel oldLayout, LayoutPanel newLayout)
+        {
+            if (oldLayout != null)
+            {
+
+            }
+            if (newLayout != null)
+            {
+                Parent = this;
+                RootPanel = newLayout;
+                if (RootPanelControl == null)
+                    Manager.RootPanelControl = Manager.UIElementFromModel(RootPanel) as FloatPanelControl;
+            }
+        }
+
+        public virtual void OnRootPanelControlChanged(FloatPanelControl oldLayout, FloatPanelControl newLayout)
+        {
+
+        }
+
+        
     }
 }

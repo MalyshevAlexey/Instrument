@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,6 +13,20 @@ namespace Instrument.Gui.Controls.FloatDock.Layout
 {
     public abstract class LayoutGroup<T> : LayoutElement, ILayoutContainer where T : UIElement
     {
+        #region Constructor
+
+        internal LayoutGroup()
+        {
+            _children.CollectionChanged += new NotifyCollectionChangedEventHandler(_children_CollectionChanged);
+        }
+
+        void _children_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            Console.WriteLine(e.Action);
+        }
+
+        #endregion
+
         #region Orientation
 
         private Orientation _orientation;

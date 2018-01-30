@@ -11,8 +11,6 @@ namespace Instrument.Gui.Controls.FloatDock.Interfaces
         void InsertChildAt(int index, ILayoutElement element);
         void MoveChild(int oldIndex, int newIndex);
         int IndexOfChild(ILayoutElement element);
-        void RemoveChild(ILayoutElement element);
-        void ReplaceChild(ILayoutElement oldElement, ILayoutElement newElement);
         void RemoveChildAt(int index);
         void ReplaceChildAt(int index, ILayoutElement element);
         event EventHandler ChildrenCollectionChanged;

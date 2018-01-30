@@ -58,22 +58,7 @@ namespace Instrument.Gui.Controls.FloatDock
 
         private static void OnLayoutRootPanelChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ((DockManager)d).OnLayoutRootPanelChanged(e.OldValue as LayoutPanel, e.NewValue as LayoutPanel);
-        }
-
-        private void OnLayoutRootPanelChanged(LayoutPanel oldLayout, LayoutPanel newLayout)
-        {
-            if (oldLayout != null)
-            {
-
-            }
-            if (newLayout != null)
-            {
-                newLayout.Parent = LayoutRoot;
-                LayoutRoot.RootPanel = newLayout;
-                if (RootPanelControl == null)
-                    RootPanelControl = UIElementFromModel(LayoutRoot.RootPanel) as FloatPanelControl;
-            }
+            ((DockManager)d).LayoutRoot.OnLayoutRootPanelChanged(e.OldValue as LayoutPanel, e.NewValue as LayoutPanel);
         }
 
         #endregion
@@ -102,20 +87,12 @@ namespace Instrument.Gui.Controls.FloatDock
         /// </summary>
         private static void OnRootPanelControlChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ((DockManager)d).OnRootPanelControlChanged(e.OldValue as FloatPanelControl, e.NewValue as FloatPanelControl);
-        }
-
-        /// <summary>
-        /// Provides derived classes an opportunity to handle changes to the RootPanelControl property.
-        /// </summary>
-        protected virtual void OnRootPanelControlChanged(FloatPanelControl oldLayout, FloatPanelControl newLayout)
-        {
-            
+            ((DockManager)d).LayoutRoot.OnRootPanelControlChanged(e.OldValue as FloatPanelControl, e.NewValue as FloatPanelControl);
         }
 
         #endregion
 
-        private UIElement UIElementFromModel(ILayoutContainer model)
+        internal UIElement UIElementFromModel(ILayoutContainer model)
         {
             if (model is LayoutPanel)
                 return new FloatPanelControl(model as LayoutPanel);

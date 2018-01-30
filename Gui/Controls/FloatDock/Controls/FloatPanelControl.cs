@@ -46,14 +46,15 @@ namespace Instrument.Gui.Controls.FloatDock.Controls
         {
             int count = 0;
             
-            for (int i = 0; i < _model.Children.Count + 5; i++)
+            for (int i = 0; i < _model.Children.Count * 2; i++)
             {
                 ColumnDefinition gridCol = new ColumnDefinition() { Width = GridLength.Auto };
                 ColumnDefinitions.Add(gridCol);
             }
             foreach (var item in _model.Children)
             {
-                SetColumn(item, ++count);
+                Console.WriteLine(LayoutPanel.GetDock(item));
+                SetColumn(item, count);
                 Children.Add(item);
                 if (count < _model.Children.Count + 3)
                 {
@@ -63,6 +64,7 @@ namespace Instrument.Gui.Controls.FloatDock.Controls
                     gs1.Width = 5; //or whatever other height you desire.
                     SetColumn(gs1, ++count);
                     Children.Add(gs1);
+                    count++;
                 }
                 
             }
