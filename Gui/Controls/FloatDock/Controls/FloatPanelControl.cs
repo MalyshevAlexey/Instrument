@@ -13,15 +13,13 @@ using System.Windows.Media;
 
 namespace Instrument.Gui.Controls.FloatDock.Controls
 {
-    public class FloatPanelControl : Grid , ILayoutControl
+    public class FloatPanelControl : Panel , ILayoutControl
     {
         #region Constructor
 
         public FloatPanelControl(LayoutPanel model)
         {
             _model = model;
-            InitContent();
-            //CreateDynamicWPFGrid();
         }
 
         #endregion
@@ -36,40 +34,40 @@ namespace Instrument.Gui.Controls.FloatDock.Controls
 
         #endregion
 
-        protected override void OnMouseRightButtonDown(MouseButtonEventArgs e)
+        public void InitContent(object sender, EventArgs e)
         {
-            LogicalTreeDumper.Dump(this);
-            VisualTreeDumper.Dump(this);
-        }
-
-        private void InitContent()
-        {
-            int count = 0;
-            
-            for (int i = 0; i < _model.Children.Count * 2; i++)
-            {
-                ColumnDefinition gridCol = new ColumnDefinition() { Width = GridLength.Auto };
-                ColumnDefinitions.Add(gridCol);
-            }
             foreach (var item in _model.Children)
             {
                 Console.WriteLine(LayoutPanel.GetDock(item));
-                SetColumn(item, count);
-                Children.Add(item);
-                if (count < _model.Children.Count + 3)
-                {
-                    var gs1 = new GridSplitter();
-                    gs1.HorizontalAlignment = HorizontalAlignment.Center;
-                    gs1.VerticalAlignment = VerticalAlignment.Stretch;
-                    gs1.Width = 5; //or whatever other height you desire.
-                    SetColumn(gs1, ++count);
-                    Children.Add(gs1);
-                    count++;
-                }
-                
             }
-            MeasureOverride(new Size(ActualWidth, ActualHeight));
-            ArrangeOverride(new Size(ActualWidth, ActualHeight));
+
+            //Children.Clear();
+            //int count = 0;
+
+            //for (int i = 0; i < _model.Children.Count * 2; i++)
+            //{
+            //    ColumnDefinition gridCol = new ColumnDefinition() { Width = GridLength.Auto };
+            //    ColumnDefinitions.Add(gridCol);
+            //}
+            //foreach (var item in _model.Children)
+            //{
+            //    Console.WriteLine(LayoutPanel.GetDock(item));
+            //    SetColumn(item, count);
+            //    Children.Add(item);
+            //    if (count < _model.Children.Count + 3)
+            //    {
+            //        var gs1 = new GridSplitter();
+            //        gs1.HorizontalAlignment = HorizontalAlignment.Center;
+            //        gs1.VerticalAlignment = VerticalAlignment.Stretch;
+            //        gs1.Width = 5; //or whatever other height you desire.
+            //        SetColumn(gs1, ++count);
+            //        Children.Add(gs1);
+            //        count++;
+            //    }
+
+            //}
+            //MeasureOverride(new Size(ActualWidth, ActualHeight));
+            //ArrangeOverride(new Size(ActualWidth, ActualHeight));
         }
 
         private void CreateDynamicWPFGrid()

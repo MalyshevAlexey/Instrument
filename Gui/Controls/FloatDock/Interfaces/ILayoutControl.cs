@@ -9,5 +9,6 @@ namespace Instrument.Gui.Controls.FloatDock.Interfaces
     public interface ILayoutControl
     {
         ILayoutElement Model { get; }
+        void InitContent(object sender, EventArgs e);
     }
 }

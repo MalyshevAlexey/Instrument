@@ -11,7 +11,7 @@ using System.Windows.Controls;
 
 namespace Instrument.Gui.Controls.FloatDock.Layout
 {
-    public abstract class LayoutGroup<T> : LayoutElement, ILayoutContainer where T : UIElement
+    public abstract class LayoutGroup<T> : LayoutElement, ILayoutGroup where T : ILayoutElement
     {
         #region Constructor
 
@@ -23,6 +23,7 @@ namespace Instrument.Gui.Controls.FloatDock.Layout
         void _children_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             Console.WriteLine(e.Action);
+            ChildrenCollectionChanged?.Invoke(this, EventArgs.Empty);
         }
 
         #endregion
@@ -109,6 +110,109 @@ namespace Instrument.Gui.Controls.FloatDock.Layout
         public void ReplaceChildAt(int index, ILayoutElement element)
         {
             _children[index] = (T)element;
+        }
+
+        #endregion
+
+        #region Position
+
+        GridLength _dockWidth = new GridLength(1.0, GridUnitType.Star);
+        public GridLength DockWidth
+        {
+            get { return _dockWidth; }
+            set
+            {
+                if (DockWidth != value)
+                {
+                    RaisePropertyChanging("DockWidth");
+                    _dockWidth = value;
+                    RaisePropertyChanged("DockWidth");
+
+                    OnDockWidthChanged();
+                }
+            }
+        }
+
+
+        protected virtual void OnDockWidthChanged()
+        {
+
+        }
+
+        GridLength _dockHeight = new GridLength(1.0, GridUnitType.Star);
+        public GridLength DockHeight
+        {
+            get { return _dockHeight; }
+            set
+            {
+                if (DockHeight != value)
+                {
+                    RaisePropertyChanging("DockHeight");
+                    _dockHeight = value;
+                    RaisePropertyChanged("DockHeight");
+
+                    OnDockHeightChanged();
+                }
+            }
+        }
+
+        protected virtual void OnDockHeightChanged()
+        {
+
+        }
+
+        #region DockMinWidth
+
+        private double _dockMinWidth = 25.0;
+        public double DockMinWidth
+        {
+            get { return _dockMinWidth; }
+            set
+            {
+                if (_dockMinWidth != value)
+                {
+                    //MathHelper.AssertIsPositiveOrZero(value);
+                    RaisePropertyChanging("DockMinWidth");
+                    _dockMinWidth = value;
+                    RaisePropertyChanged("DockMinWidth");
+                }
+            }
+        }
+
+        #endregion
+
+        #region DockMinHeight
+
+        private double _dockMinHeight = 25.0;
+        public double DockMinHeight
+        {
+            get { return _dockMinHeight; }
+            set
+            {
+                if (_dockMinHeight != value)
+                {
+                    //MathHelper.AssertIsPositiveOrZero(value);
+                    RaisePropertyChanging("DockMinHeight");
+                    _dockMinHeight = value;
+                    RaisePropertyChanged("DockMinHeight");
+                }
+            }
+        }
+
+        #endregion
+
+        private double _actualWidth;
+        public double ActualWidth
+        {
+            get { return _actualWidth; }
+            set { _actualWidth = value; }
+        }
+
+        private double _actualHeight;
+        public double ActualHeight
+        {
+            get { return _actualHeight; }
+            set { _actualHeight = value; }
         }
 
         #endregion

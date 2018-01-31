@@ -9,7 +9,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type local:DockManager}">
                     <Grid Background="LightSlateGray">
-                        <ContentPresenter Content="{TemplateBinding RootPanelControl}"/>
+                        <ContentPresenter Content="{Binding LayoutRoot.RootPanelControl, RelativeSource={RelativeSource TemplatedParent}}" />
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>

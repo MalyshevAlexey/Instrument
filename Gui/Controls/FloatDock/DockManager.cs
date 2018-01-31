@@ -26,7 +26,7 @@ namespace Instrument.Gui.Controls.FloatDock
     {
         #region Variables
 
-        ILayoutRoot LayoutRoot;
+        
 
         #endregion
 
@@ -44,50 +44,34 @@ namespace Instrument.Gui.Controls.FloatDock
 
         #endregion
 
+        #region LayoutRoot
+
+        public static readonly DependencyProperty LayoutRootProperty =
+            DependencyProperty.Register(nameof(LayoutRoot), typeof(ILayoutRoot), typeof(DockManager));
+
+        public ILayoutRoot LayoutRoot
+        {
+            get { return (ILayoutRoot)GetValue(LayoutRootProperty); }
+            set { SetValue(LayoutRootProperty, value); }
+        }
+
+        #endregion
+
         #region LayoutRootPanel
 
         public static readonly DependencyProperty LayoutRootPanelProperty =
-            DependencyProperty.Register(nameof(LayoutRootPanel), typeof(LayoutPanel), typeof(DockManager),
+            DependencyProperty.Register(nameof(LayoutRootPanel), typeof(ILayoutGroup), typeof(DockManager),
                 new FrameworkPropertyMetadata(null, OnLayoutRootPanelChanged));
 
-        public LayoutPanel LayoutRootPanel
+        public ILayoutGroup LayoutRootPanel
         {
-            get { return (LayoutPanel)GetValue(LayoutRootPanelProperty); }
+            get { return (ILayoutGroup)GetValue(LayoutRootPanelProperty); }
             set { SetValue(LayoutRootPanelProperty, value); }
         }
 
         private static void OnLayoutRootPanelChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ((DockManager)d).LayoutRoot.OnLayoutRootPanelChanged(e.OldValue as LayoutPanel, e.NewValue as LayoutPanel);
-        }
-
-        #endregion
-
-        #region RootPanelControl
-
-        /// <summary>
-        /// RootPanelControl Dependency Property
-        /// </summary>
-        public static readonly DependencyProperty RootPanelControlProperty =
-            DependencyProperty.Register(nameof(RootPanelControl), typeof(FloatPanelControl), typeof(DockManager),
-                new FrameworkPropertyMetadata(null, OnRootPanelControlChanged));
-
-        /// <summary>
-        /// Gets or sets the RootPanelControl property.  This dependency property 
-        /// indicates the layout panel control which is attached to the Layout.Root property.
-        /// </summary>
-        public FloatPanelControl RootPanelControl
-        {
-            get { return (FloatPanelControl)GetValue(RootPanelControlProperty); }
-            set { SetValue(RootPanelControlProperty, value); }
-        }
-
-        /// <summary>
-        /// Handles changes to the RootPanelControl property.
-        /// </summary>
-        private static void OnRootPanelControlChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            ((DockManager)d).LayoutRoot.OnRootPanelControlChanged(e.OldValue as FloatPanelControl, e.NewValue as FloatPanelControl);
+            ((DockManager)d).LayoutRoot.OnLayoutRootPanelChanged(e.OldValue as ILayoutGroup, e.NewValue as ILayoutGroup);
         }
 
         #endregion
@@ -104,11 +88,15 @@ namespace Instrument.Gui.Controls.FloatDock
         {
             get
             {
-                if (RootPanelControl != null)
-                    yield return RootPanelControl;
+                if (LayoutRoot.RootPanelControl != null)
+                    yield return LayoutRoot.RootPanelControl;
             }
         }
 
-        
+        protected override void OnMouseRightButtonDown(MouseButtonEventArgs e)
+        {
+            LogicalTreeDumper.Dump(this);
+            VisualTreeDumper.Dump(this);
+        }
     }
 }

@@ -1,14 +1,13 @@
 ﻿<Window x:Class="Instrument.Gui.FloatingGui.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:local="clr-namespace:Instrument.Gui.FloatingGui"
         xmlns:gui="http://schemas.instrument.net/wpf/xaml/gui"
         Title="MainWindow" Height="500" Width="800">
     
     <gui:DockManager>
         <gui:LayoutPanel>
-            <Button gui:LayoutPanel.Dock="Right" Content="Button1"/>
-            <Button Content="Button2"/>
+            <gui:LayoutPanel gui:LayoutPanel.Dock="Bottom"/>
+            <gui:LayoutPanel gui:LayoutPanel.Dock="Top"/>
         </gui:LayoutPanel>
     </gui:DockManager>
     

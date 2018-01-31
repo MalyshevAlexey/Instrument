@@ -9,12 +9,11 @@ using System.Windows;
 
 namespace Instrument.Gui.Controls.FloatDock.Layout
 {
-    internal class LayoutRoot : LayoutElement, ILayoutRoot
+    public class LayoutRoot : LayoutElement, ILayoutRoot
     {
         #region Variables
 
-        public ILayoutContainer RootPanel { get; private set; }
-        public UIElement RootPanelControl { get; private set; }
+        public ILayoutGroup RootPanel { get; private set; }
 
         #endregion
 
@@ -69,12 +68,12 @@ namespace Instrument.Gui.Controls.FloatDock.Layout
         public void ReplaceChild(ILayoutElement oldElement, ILayoutElement newElement)
         {
             if (oldElement == RootPanel)
-                RootPanel = (LayoutPanel)newElement;
+                RootPanel = (ILayoutGroup)newElement;
         }
 
         #endregion
 
-        public virtual void OnLayoutRootPanelChanged(LayoutPanel oldLayout, LayoutPanel newLayout)
+        public virtual void OnLayoutRootPanelChanged(ILayoutGroup oldLayout, ILayoutGroup newLayout)
         {
             if (oldLayout != null)
             {
@@ -82,18 +81,53 @@ namespace Instrument.Gui.Controls.FloatDock.Layout
             }
             if (newLayout != null)
             {
-                Parent = this;
+                newLayout.Parent = this;
                 RootPanel = newLayout;
                 if (RootPanelControl == null)
-                    Manager.RootPanelControl = Manager.UIElementFromModel(RootPanel) as FloatPanelControl;
+                    RootPanelControl = Manager.UIElementFromModel(RootPanel) as ILayoutControl;
+                RootPanel.ChildrenCollectionChanged += new EventHandler(RootPanelControl.InitContent);
             }
         }
 
-        public virtual void OnRootPanelControlChanged(FloatPanelControl oldLayout, FloatPanelControl newLayout)
-        {
+        #region RootPanelControl
 
+        /// <summary>
+        /// RootPanelControl Dependency Property
+        /// </summary>
+        public static readonly DependencyProperty RootPanelControlProperty =
+            DependencyProperty.Register(nameof(RootPanelControl), typeof(ILayoutControl), typeof(LayoutRoot),
+                new FrameworkPropertyMetadata(null, OnRootPanelControlChanged));
+
+        /// <summary>
+        /// Gets or sets the RootPanelControl property.  This dependency property 
+        /// indicates the layout panel control which is attached to the Layout.Root property.
+        /// </summary>
+        public ILayoutControl RootPanelControl
+        {
+            get { return (ILayoutControl)GetValue(RootPanelControlProperty); }
+            set { SetValue(RootPanelControlProperty, value); }
         }
 
-        
+        /// <summary>
+        /// Handles changes to the RootPanelControl property.
+        /// </summary>
+        private static void OnRootPanelControlChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            ((LayoutRoot)d).OnRootPanelControlChanged(e.OldValue as ILayoutControl, e.NewValue as ILayoutControl);
+        }
+
+        public virtual void OnRootPanelControlChanged(ILayoutControl oldControl, ILayoutControl newControl)
+        {
+            if (oldControl != null)
+            {
+
+            }
+            if (newControl != null)
+            {
+                newControl.InitContent(this, EventArgs.Empty);
+            }
+        }
+
+        #endregion
     }
 }

@@ -12,9 +12,8 @@ namespace Instrument.Gui.Controls.FloatDock.Interfaces
     public interface ILayoutRoot : ILayoutContainer
     {
         DockManager Manager { get; }
-        ILayoutContainer RootPanel { get; }
-        UIElement RootPanelControl { get; }
-        void OnLayoutRootPanelChanged(LayoutPanel oldLayout, LayoutPanel newLayout);
-        void OnRootPanelControlChanged(FloatPanelControl oldControl, FloatPanelControl newControl);
+        ILayoutGroup RootPanel { get; }
+        ILayoutControl RootPanelControl { get; }
+        void OnLayoutRootPanelChanged(ILayoutGroup oldLayout, ILayoutGroup newLayout);
     }
 }

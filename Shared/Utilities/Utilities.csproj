@@ -36,12 +36,14 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="LogicalTreeDumper.cs" />
+    <Compile Include="PerformanceCheck.cs" />
     <Compile Include="Utils.cs" />
     <Compile Include="VisualTreeDumper.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

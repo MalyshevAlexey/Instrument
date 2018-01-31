@@ -14,6 +14,11 @@ namespace Instrument.Gui.Controls.FloatDock.Layout
     public enum Dock
     {
         /// <summary>
+        /// Position this child in the center of the remaining space. 
+        /// </summary> 
+        Center,
+
+        /// <summary>
         /// Position this child at the left of the remaining space. 
         /// </summary>
         Left,
@@ -35,26 +40,25 @@ namespace Instrument.Gui.Controls.FloatDock.Layout
     }
 
     [ContentProperty("Children")]
-    public class LayoutPanel : LayoutGroup<UIElement>, ILayoutContainer
+    public class LayoutPanel : LayoutGroup<ILayoutElement>
     {
         public LayoutPanel()
         {
-            
         }
 
         #region DockProperty
 
         public static readonly DependencyProperty DockProperty =
                 DependencyProperty.RegisterAttached(nameof(Dock), typeof(Dock), typeof(LayoutPanel),
-                        new FrameworkPropertyMetadata(Dock.Left, OnDockChanged), IsValidDock);
+                        new FrameworkPropertyMetadata(Dock.Center, OnDockChanged), IsValidDock);
 
-        public static Dock GetDock(UIElement element)
+        public static Dock GetDock(ILayoutElement element)
         {
             if (element == null) { throw new ArgumentNullException("element"); }
             return (Dock)element.GetValue(DockProperty);
         }
 
-        public static void SetDock(UIElement element, Dock dock)
+        public static void SetDock(ILayoutElement element, Dock dock)
         {
             if (element == null) { throw new ArgumentNullException("element"); }
             element.SetValue(DockProperty, dock);
@@ -63,7 +67,7 @@ namespace Instrument.Gui.Controls.FloatDock.Layout
         internal static bool IsValidDock(object o)
         {
             Dock dock = (Dock)o;
-            return (dock == Dock.Left || dock == Dock.Top || dock == Dock.Right || dock == Dock.Bottom);
+            return (dock == Dock.Center || dock == Dock.Left || dock == Dock.Top || dock == Dock.Right || dock == Dock.Bottom);
         }
 
         private static void OnDockChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
