@@ -54,6 +54,10 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Shared\Utilities\Utilities.csproj">
+      <Project>{12c585e3-2659-4282-bf33-4a3b968ce8bc}</Project>
+      <Name>Utilities</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Controls\FloatDock\FloatDock.csproj">
       <Project>{915c5fae-e1c0-43c8-abbb-d40c69ac179e}</Project>
       <Name>FloatDock</Name>

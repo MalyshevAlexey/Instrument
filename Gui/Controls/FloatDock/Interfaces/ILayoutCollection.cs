@@ -7,7 +7,7 @@ using System.Windows;
 
 namespace Instrument.Gui.Controls.FloatDock.Interfaces
 {
-    public interface ILayoutGroup : ILayoutContainer
+    public interface ILayoutCollection : ILayoutContainer
     {
         void InsertChildAt(int index, ILayoutElement element);
         void MoveChild(int oldIndex, int newIndex);

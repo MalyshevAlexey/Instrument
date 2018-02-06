@@ -3,12 +3,35 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:gui="http://schemas.instrument.net/wpf/xaml/gui"
         Title="MainWindow" Height="500" Width="800">
-    
+
     <gui:DockManager>
         <gui:LayoutPanel>
-            <gui:LayoutPanel gui:LayoutPanel.Dock="Bottom"/>
-            <gui:LayoutPanel gui:LayoutPanel.Dock="Top"/>
+            <gui:LayoutDocument>
+                
+            </gui:LayoutDocument>
         </gui:LayoutPanel>
     </gui:DockManager>
+    
+    <!--<gui:DockManager>
+        <gui:LayoutPanel Type="Dock" Tag="level1">
+            <gui:LayoutPanel Tag="level2_a" gui:LayoutPanel.Dock="Bottom">
+                <gui:LayoutPanel Tag="level3_aa">
+                    <gui:LayoutDocument/>
+                    <gui:LayoutDocument/>
+                </gui:LayoutPanel>
+                <gui:LayoutPanel Tag="level3_ab"/>
+            </gui:LayoutPanel>
+            <gui:LayoutPanel Tag="level2_b"  gui:LayoutPanel.Dock="Top">
+                <gui:LayoutPanel Tag="level3_ba">
+                    <gui:LayoutDocument/>
+                </gui:LayoutPanel>
+            </gui:LayoutPanel>
+            <gui:LayoutPanel Tag="level2_c">
+                <gui:LayoutDocument/>
+                <gui:LayoutDocument/>
+                <gui:LayoutDocument/>
+            </gui:LayoutPanel>
+        </gui:LayoutPanel>
+    </gui:DockManager>-->
     
 </Window>

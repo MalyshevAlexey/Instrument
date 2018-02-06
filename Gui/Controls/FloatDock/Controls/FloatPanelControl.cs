@@ -38,7 +38,7 @@ namespace Instrument.Gui.Controls.FloatDock.Controls
         {
             foreach (var item in _model.Children)
             {
-                Console.WriteLine(LayoutPanel.GetDock(item));
+                Console.WriteLine(LayoutPanel.GetDock(item) + " " + (item as LayoutPanel).Tag);
             }
 
             //Children.Clear();

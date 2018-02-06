@@ -18,7 +18,7 @@ namespace Instrument.Utilities
             long[] res = new long[count];
             long min = long.MaxValue, max = long.MinValue, average = 0;
             GC.Collect();
-            Method.Invoke();
+            //Method.Invoke();
             Stopwatch sw = new Stopwatch();
             for (int i = 0; i < count; i++)
             {
@@ -27,12 +27,12 @@ namespace Instrument.Utilities
                 sw.Stop();
                 res[i] = sw.Elapsed.Ticks;
                 if (res[i] > max) max = res[i];
-                else if (res[i] < min) min = res[i];
+                if (res[i] < min) min = res[i];
                 average += res[i];
             }
             Console.WriteLine("Runned " + count);
-            Console.WriteLine("Min " + (double)min / 10);
-            Console.WriteLine("Max " + (double)max / 10);
+            Console.WriteLine("Min {0:F3}", (double)min / 10);
+            Console.WriteLine("Max {0:F3}", (double)max / 10);
             Console.WriteLine("Average {0:F3}", average / (double)count / 10);
             Console.WriteLine();
             Process.GetCurrentProcess().PriorityClass = ProcessPriorityClass.Normal;

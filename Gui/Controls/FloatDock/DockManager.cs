@@ -60,26 +60,28 @@ namespace Instrument.Gui.Controls.FloatDock
         #region LayoutRootPanel
 
         public static readonly DependencyProperty LayoutRootPanelProperty =
-            DependencyProperty.Register(nameof(LayoutRootPanel), typeof(ILayoutGroup), typeof(DockManager),
+            DependencyProperty.Register(nameof(LayoutRootPanel), typeof(ILayoutCollection), typeof(DockManager),
                 new FrameworkPropertyMetadata(null, OnLayoutRootPanelChanged));
 
-        public ILayoutGroup LayoutRootPanel
+        public ILayoutCollection LayoutRootPanel
         {
-            get { return (ILayoutGroup)GetValue(LayoutRootPanelProperty); }
+            get { return (ILayoutCollection)GetValue(LayoutRootPanelProperty); }
             set { SetValue(LayoutRootPanelProperty, value); }
         }
 
         private static void OnLayoutRootPanelChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ((DockManager)d).LayoutRoot.OnLayoutRootPanelChanged(e.OldValue as ILayoutGroup, e.NewValue as ILayoutGroup);
+            ((DockManager)d).LayoutRoot.OnLayoutRootPanelChanged(e.OldValue as ILayoutCollection, e.NewValue as ILayoutCollection);
         }
 
         #endregion
 
-        internal UIElement UIElementFromModel(ILayoutContainer model)
+        internal UIElement UIElementFromModel(ILayoutElement model)
         {
             if (model is LayoutPanel)
                 return new FloatPanelControl(model as LayoutPanel);
+            if (model is LayoutDocument)
+                return new DocumentControl(model as LayoutDocument);
 
             return null;
         }

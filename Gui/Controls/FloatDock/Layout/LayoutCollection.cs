@@ -11,22 +11,43 @@ using System.Windows.Controls;
 
 namespace Instrument.Gui.Controls.FloatDock.Layout
 {
-    public abstract class LayoutGroup<T> : LayoutElement, ILayoutGroup where T : ILayoutElement
+    public abstract class LayoutCollection<T> : LayoutElement, ILayoutCollection where T : ILayoutElement
     {
         #region Constructor
 
-        internal LayoutGroup()
+        internal LayoutCollection()
         {
             _children.CollectionChanged += new NotifyCollectionChangedEventHandler(_children_CollectionChanged);
         }
 
+        #endregion
+
         void _children_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             Console.WriteLine(e.Action);
+            if (e.OldItems != null)
+            {
+                foreach (LayoutElement element in e.OldItems)
+                {
+                    if (element.Parent == this)
+                        element.Parent = null;
+                }
+            }
+            if (e.NewItems != null)
+            {
+                foreach (ILayoutElement element in e.NewItems)
+                {
+                    if (element.Parent != this)
+                    {
+                        if (element.Parent != null)
+                            element.Parent.RemoveChild(element);
+                        element.Parent = this;
+                    }
+                }
+            }
             ChildrenCollectionChanged?.Invoke(this, EventArgs.Empty);
+            RaisePropertyChanged(nameof(ChildrenCount));
         }
-
-        #endregion
 
         #region Orientation
 
@@ -132,7 +153,6 @@ namespace Instrument.Gui.Controls.FloatDock.Layout
                 }
             }
         }
-
 
         protected virtual void OnDockWidthChanged()
         {

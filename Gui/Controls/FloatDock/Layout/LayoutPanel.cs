@@ -1,4 +1,5 @@
-﻿using Instrument.Gui.Controls.FloatDock.Interfaces;
+﻿using Instrument.Gui.Controls.FloatDock.Controls;
+using Instrument.Gui.Controls.FloatDock.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -39,11 +40,17 @@ namespace Instrument.Gui.Controls.FloatDock.Layout
         Bottom,
     }
 
+    public enum Type
+    {
+        Dock,
+    }
+
     [ContentProperty("Children")]
-    public class LayoutPanel : LayoutGroup<ILayoutElement>
+    public class LayoutPanel : LayoutCollection<ILayoutElement>
     {
         public LayoutPanel()
         {
+            //ChildrenCollectionChanged += new EventHandler(OnChildrenCollectionChanged);
         }
 
         #region DockProperty
@@ -77,6 +84,37 @@ namespace Instrument.Gui.Controls.FloatDock.Layout
 
         #endregion
 
+        #region TagProperty
+
+        public string Tag
+        {
+            get { return (string)GetValue(TagProperty); }
+            set { SetValue(TagProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for Tag.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty TagProperty =
+            DependencyProperty.Register("Tag", typeof(string), typeof(LayoutPanel), new PropertyMetadata(""));
+
+        #endregion
+
+        #region TypeProperty
+
+
+
+        public Type Type
+        {
+            get { return (Type)GetValue(TypeProperty); }
+            set { SetValue(TypeProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for Type.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty TypeProperty =
+            DependencyProperty.Register("Type", typeof(Type), typeof(LayoutPanel), new FrameworkPropertyMetadata(Type.Dock));
+
+
+
+        #endregion
 
     }
 }
