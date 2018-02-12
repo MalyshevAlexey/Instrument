@@ -1,28 +1,30 @@
-﻿using Instrument.Gui.Controls.FloatDock.Interfaces;
+﻿using Instrument.Gui.Controls.FloatDock.Base.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace Instrument.Gui.Controls.FloatDock.Layout
+namespace Instrument.Gui.Controls.FloatDock.Base
 {
-    public abstract class LayoutCollection<T> : LayoutElement, ILayoutCollection where T : ILayoutElement
+    public abstract class LayoutGroup<T> : LayoutElement, ILayoutGroup where T : ILayoutElement
     {
         #region Constructor
 
-        internal LayoutCollection()
+        internal LayoutGroup()
         {
             _children.CollectionChanged += new NotifyCollectionChangedEventHandler(_children_CollectionChanged);
+            //if (DesignMode) throw new Exception("designer");
         }
 
         #endregion
 
-        void _children_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private void _children_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             Console.WriteLine(e.Action);
             if (e.OldItems != null)
@@ -37,6 +39,10 @@ namespace Instrument.Gui.Controls.FloatDock.Layout
             {
                 foreach (ILayoutElement element in e.NewItems)
                 {
+                    //Console.WriteLine(
+                    //    ((element is LayoutPanel) ? (element as LayoutPanel).Tag.ToString() : "Document")
+                    //    + " " + ((element is LayoutPanel) ? (element as LayoutPanel).Type.ToString() : "Document")
+                    //    + " " + LayoutPanel.GetDock(element));
                     if (element.Parent != this)
                     {
                         if (element.Parent != null)
@@ -44,6 +50,10 @@ namespace Instrument.Gui.Controls.FloatDock.Layout
                         element.Parent = this;
                     }
                 }
+            }
+            if (Root != null)
+            {
+                //throw new Exception(this.ToString());
             }
             ChildrenCollectionChanged?.Invoke(this, EventArgs.Empty);
             RaisePropertyChanged(nameof(ChildrenCount));

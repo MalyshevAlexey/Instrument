@@ -1,5 +1,8 @@
-﻿using Instrument.Gui.Controls.FloatDock.Controls;
-using Instrument.Gui.Controls.FloatDock.Interfaces;
+﻿using Instrument.Gui.Controls.FloatDock.Base;
+using Instrument.Gui.Controls.FloatDock.Base.Interfaces;
+using Instrument.Gui.Controls.FloatDock.Controls;
+using Instrument.Gui.Controls.FloatDock.Layout.LayoutConfigs;
+using Instrument.Gui.Controls.FloatDock.Layout.LayoutEventArgs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace Instrument.Gui.Controls.FloatDock.Layout
 {
@@ -14,7 +18,7 @@ namespace Instrument.Gui.Controls.FloatDock.Layout
     {
         #region Variables
 
-        public ILayoutCollection RootPanel { get; private set; }
+        public ILayoutGroup RootPanel { get; private set; }
 
         #endregion
 
@@ -24,6 +28,7 @@ namespace Instrument.Gui.Controls.FloatDock.Layout
         {
             Manager = manager;
             Parent = this;
+            Manager.LayoutRootPanelChanged += (s, args) => RootPanel = Manager.LayoutRootPanel;
         }
 
         #endregion
@@ -58,99 +63,163 @@ namespace Instrument.Gui.Controls.FloatDock.Layout
             }
         }
 
-        public int ChildrenCount => 1;
+        public int ChildrenCount => RootPanel == null ? 0 : 1;
 
         public void RemoveChild(ILayoutElement element)
         {
             if (element == RootPanel)
-                RootPanel = null;
+                RootPanel = _manager.LayoutRootPanel = null;
         }
 
         public void ReplaceChild(ILayoutElement oldElement, ILayoutElement newElement)
         {
             if (oldElement == RootPanel)
-                RootPanel = (ILayoutCollection)newElement;
+                _manager.LayoutRootPanel = (ILayoutGroup)newElement;
         }
 
         #endregion
 
-        public virtual void OnLayoutRootPanelChanged(ILayoutCollection oldLayout, ILayoutCollection newLayout)
-        {
-            if (oldLayout != null)
-            {
 
-            }
-            if (newLayout != null)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        //public virtual void OnLayoutRootPanelChanged(ILayoutCollection oldLayout, ILayoutCollection newLayout)
+        //{
+        //    if (oldLayout != null)
+        //    {
+
+        //    }
+        //    if (newLayout != null)
+        //    {
+        //        newLayout.Parent = this;
+
+
+        //        RootPanel = newLayout;
+
+        //        //if (DesignMode) throw new Exception((newLayout as LayoutPanel).Tag.ToString());
+
+
+        //        //Button btn1 = new Button() { Content = "Another 1" };
+        //        //Button btn2 = new Button() { Content = "Another 2" };
+        //        //LayoutDocument document = new LayoutDocument();
+        //        //LayoutDocument document1 = new LayoutDocument();
+        //        //document.Content = btn1;
+        //        //document1.Content = btn2;
+        //        //(RootPanel as LayoutPanel).Children.Add(document);
+        //        //(RootPanel as LayoutPanel).Children.Add(document1);
+
+
+        //        if (RootPanelControl == null)
+        //            RootPanelControl = Manager.UIElementFromModel(RootPanel) as ILayoutControl;
+                
+        //        (RootPanelControl as FloatPanelControl).Children.Clear();
+        //        //RecursiveBuildTree(RootPanel, RootPanelControl as UIElement);
+
+                
+
+        //        //RecursiveBuildTree(RootPanel, RootPanelControl as UIElement);
+
+        //        Test(RootPanel, RootPanelControl as UIElement);
+
+
+        //        //(RootPanelControl as FloatPanelControl).Children.Add(new DocumentControl(new LayoutDocument()) { AddChild = new Button() { Content = "Another button" } });
+        //        //(RootPanelControl as FloatPanelControl).Children.Add(new TabControl());
+
+        //        //(RootPanelControl as UIElement).Measure(new Size(400, 300));
+        //        //(RootPanelControl as UIElement).Arrange(new Rect(Manager.DesiredSize));
+        //        //RootPanel.ChildrenCollectionChanged += new EventHandler(RootPanelControl.InitContent);
+
+
+
+        //        RootPanel.ChildrenCollectionChanged += RootPanel_ChildrenCollectionChanged;
+        //    }
+        //}
+
+        public void Test(ILayoutContainer current, UIElement control)
+        {
+            foreach (ILayoutElement logicalChild in current.Children)
             {
-                newLayout.Parent = this;
-                RootPanel = newLayout;
-                if (RootPanelControl == null)
-                    RootPanelControl = Manager.UIElementFromModel(RootPanel) as ILayoutControl;
-                (RootPanelControl as FloatPanelControl).Children.Clear();
-                RecursiveBuildVisualTree(RootPanel, RootPanelControl as UIElement);
-                //RootPanel.ChildrenCollectionChanged += new EventHandler(RootPanelControl.InitContent);
+                if (logicalChild is ILayoutContainer)
+                {
+                    UIElement nextControl = Manager.UIElementFromModel(logicalChild);
+                    (control as Panel).Children.Add(nextControl);
+                    Test(logicalChild as ILayoutContainer, nextControl);
+                }
+                else if (logicalChild is LayoutContent)
+                {
+                    UIElement doc = Manager.UIElementFromModel(logicalChild);
+                    (doc as Panel).Children.Add((logicalChild as LayoutContent).Content as UIElement);
+                    (control as Panel).Children.Add(doc);
+                }
             }
+
+            //if (current is ILayoutContainer)
+            //{
+            //    LayoutDocument document = new LayoutDocument() { Content = new Button() { Content = "Another ertreqwqw" } };
+            //    UIElement nextControl = Manager.UIElementFromModel(document);
+            //    (control as FloatPanelControl).Children.Add(nextControl);
+            //    Test(document, nextControl);
+
+            //    LayoutDocument document1 = new LayoutDocument() { Content = new Button() { Content = "Another er111111" } };
+            //    UIElement nextControl1 = Manager.UIElementFromModel(document1);
+            //    (control as FloatPanelControl).Children.Add(nextControl1);
+            //    Test(document1, nextControl1);
+            //}
+            //else if (current is LayoutContent)
+            //{
+            //    UIElement doc = Manager.UIElementFromModel(current);
+            //    (doc as Panel).Children.Add((current as LayoutContent).Content as UIElement);
+            //    (control as Panel).Children.Add(doc);
+            //}
         }
 
-        private void RecursiveBuildVisualTree(ILayoutContainer current, UIElement control)
+        public void RecursiveBuildTree(ILayoutContainer current, UIElement control)
         {
             if (current != null)
+            {
                 foreach (ILayoutElement logicalChild in current.Children)
                 {
-                    if (logicalChild is LayoutPanel)
+                    if (logicalChild is ILayoutContainer)
                     {
-                        //Console.WriteLine((logicalChild as LayoutPanel).Tag);
+                        //Console.WriteLine(logicalChild.Tag
+                        //    + " " + (logicalChild as LayoutPanel).Type
+                        //    + " " + LayoutPanel.GetDock(logicalChild));
+
                         UIElement nextControl = Manager.UIElementFromModel(logicalChild);
                         (control as Panel).Children.Add(nextControl);
-                        RecursiveBuildVisualTree(logicalChild as ILayoutContainer, nextControl);
+                        RecursiveBuildTree(logicalChild as ILayoutContainer, nextControl);
                     }
-                    else
+                    else if (logicalChild is ElementConfig)
                     {
-                        //Console.WriteLine("Document");
-                        (control as Panel).Children.Add(Manager.UIElementFromModel(logicalChild));
+                        //Console.WriteLine("Config");
+                        current.Config = logicalChild as ElementConfig;
+                    }
+                    else if (logicalChild is LayoutContent)
+                    {
+                        //Console.WriteLine(logicalChild.Tag
+                        //    + " " + LayoutPanel.GetDock(logicalChild));
+
+                        UIElement doc = Manager.UIElementFromModel(logicalChild);
+                        (doc as Panel).Children.Add((logicalChild as LayoutContent).Content as UIElement);
+                        (control as Panel).Children.Add(doc);
                     }
                 }
-        }
-
-        #region RootPanelControl
-
-        /// <summary>
-        /// RootPanelControl Dependency Property
-        /// </summary>
-        public static readonly DependencyProperty RootPanelControlProperty =
-            DependencyProperty.Register(nameof(RootPanelControl), typeof(ILayoutControl), typeof(LayoutRoot),
-                new FrameworkPropertyMetadata(null, OnRootPanelControlChanged));
-
-        /// <summary>
-        /// Gets or sets the RootPanelControl property.  This dependency property 
-        /// indicates the layout panel control which is attached to the Layout.Root property.
-        /// </summary>
-        public ILayoutControl RootPanelControl
-        {
-            get { return (ILayoutControl)GetValue(RootPanelControlProperty); }
-            set { SetValue(RootPanelControlProperty, value); }
-        }
-
-        /// <summary>
-        /// Handles changes to the RootPanelControl property.
-        /// </summary>
-        private static void OnRootPanelControlChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            ((LayoutRoot)d).OnRootPanelControlChanged(e.OldValue as ILayoutControl, e.NewValue as ILayoutControl);
-        }
-
-        public virtual void OnRootPanelControlChanged(ILayoutControl oldControl, ILayoutControl newControl)
-        {
-            if (oldControl != null)
-            {
-
-            }
-            if (newControl != null)
-            {
-                //newControl.InitContent(this, EventArgs.Empty);
             }
         }
-
-        #endregion
     }
 }

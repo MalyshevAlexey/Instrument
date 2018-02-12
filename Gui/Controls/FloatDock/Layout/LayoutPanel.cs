@@ -1,5 +1,6 @@
-﻿using Instrument.Gui.Controls.FloatDock.Controls;
-using Instrument.Gui.Controls.FloatDock.Interfaces;
+﻿using Instrument.Gui.Controls.FloatDock.Base;
+using Instrument.Gui.Controls.FloatDock.Base.Interfaces;
+using Instrument.Gui.Controls.FloatDock.Controls;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -43,10 +44,12 @@ namespace Instrument.Gui.Controls.FloatDock.Layout
     public enum Type
     {
         Dock,
+        Grid,
+        Tab,
     }
 
-    [ContentProperty("Children")]
-    public class LayoutPanel : LayoutCollection<ILayoutElement>
+    [ContentProperty(nameof(Children))]
+    public class LayoutPanel : LayoutGroup<ILayoutElement>
     {
         public LayoutPanel()
         {
@@ -79,28 +82,11 @@ namespace Instrument.Gui.Controls.FloatDock.Layout
 
         private static void OnDockChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-
         }
-
-        #endregion
-
-        #region TagProperty
-
-        public string Tag
-        {
-            get { return (string)GetValue(TagProperty); }
-            set { SetValue(TagProperty, value); }
-        }
-
-        // Using a DependencyProperty as the backing store for Tag.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty TagProperty =
-            DependencyProperty.Register("Tag", typeof(string), typeof(LayoutPanel), new PropertyMetadata(""));
 
         #endregion
 
         #region TypeProperty
-
-
 
         public Type Type
         {
@@ -110,9 +96,8 @@ namespace Instrument.Gui.Controls.FloatDock.Layout
 
         // Using a DependencyProperty as the backing store for Type.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty TypeProperty =
-            DependencyProperty.Register("Type", typeof(Type), typeof(LayoutPanel), new FrameworkPropertyMetadata(Type.Dock));
-
-
+            DependencyProperty.Register(nameof(Type), typeof(Type), typeof(LayoutPanel),
+                new FrameworkPropertyMetadata(Type.Dock));
 
         #endregion
 

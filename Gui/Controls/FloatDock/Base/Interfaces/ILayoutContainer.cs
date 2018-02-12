@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Instrument.Gui.Controls.FloatDock.Interfaces
+namespace Instrument.Gui.Controls.FloatDock.Base.Interfaces
 {
     public interface ILayoutContainer : ILayoutElement
     {

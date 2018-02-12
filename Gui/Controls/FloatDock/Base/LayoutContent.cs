@@ -1,12 +1,14 @@
-﻿using Instrument.Gui.Controls.FloatDock.Interfaces;
+﻿using Instrument.Gui.Controls.FloatDock.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Markup;
 
-namespace Instrument.Gui.Controls.FloatDock.Layout
+namespace Instrument.Gui.Controls.FloatDock.Base
 {
     [ContentProperty("Content")]
     public abstract class LayoutContent : LayoutElement

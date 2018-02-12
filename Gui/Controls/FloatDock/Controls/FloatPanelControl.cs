@@ -1,4 +1,5 @@
-﻿using Instrument.Gui.Controls.FloatDock.Interfaces;
+﻿using Instrument.Gui.Controls.FloatDock.Base;
+using Instrument.Gui.Controls.FloatDock.Base.Interfaces;
 using Instrument.Gui.Controls.FloatDock.Layout;
 using Instrument.Utilities;
 using System;
@@ -10,16 +11,24 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Threading;
 
 namespace Instrument.Gui.Controls.FloatDock.Controls
 {
-    public class FloatPanelControl : Panel , ILayoutControl
+    public class FloatPanelControl : Panel, ILayoutControl
     {
         #region Constructor
 
         public FloatPanelControl(LayoutPanel model)
         {
             _model = model;
+            _model.PropertyChanged += (s, args) =>
+            {
+                Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    UpdateChildren();
+                }), DispatcherPriority.Normal, null);
+            };
         }
 
         #endregion
@@ -34,95 +43,62 @@ namespace Instrument.Gui.Controls.FloatDock.Controls
 
         #endregion
 
-        public void InitContent(object sender, EventArgs e)
+        protected override void OnInitialized(EventArgs e)
         {
-            foreach (var item in _model.Children)
-            {
-                Console.WriteLine(LayoutPanel.GetDock(item) + " " + (item as LayoutPanel).Tag);
-            }
-
-            //Children.Clear();
-            //int count = 0;
-
-            //for (int i = 0; i < _model.Children.Count * 2; i++)
-            //{
-            //    ColumnDefinition gridCol = new ColumnDefinition() { Width = GridLength.Auto };
-            //    ColumnDefinitions.Add(gridCol);
-            //}
-            //foreach (var item in _model.Children)
-            //{
-            //    Console.WriteLine(LayoutPanel.GetDock(item));
-            //    SetColumn(item, count);
-            //    Children.Add(item);
-            //    if (count < _model.Children.Count + 3)
-            //    {
-            //        var gs1 = new GridSplitter();
-            //        gs1.HorizontalAlignment = HorizontalAlignment.Center;
-            //        gs1.VerticalAlignment = VerticalAlignment.Stretch;
-            //        gs1.Width = 5; //or whatever other height you desire.
-            //        SetColumn(gs1, ++count);
-            //        Children.Add(gs1);
-            //        count++;
-            //    }
-
-            //}
-            //MeasureOverride(new Size(ActualWidth, ActualHeight));
-            //ArrangeOverride(new Size(ActualWidth, ActualHeight));
+            base.OnInitialized(e);
+            UpdateChildren();
+            LayoutUpdated += new EventHandler(OnLayoutUpdated);
         }
 
-        private void CreateDynamicWPFGrid()
+        private void UpdateChildren()
         {
-            // Create the Grid
-            Grid DynamicGrid = new Grid();
-            DynamicGrid.Background = new SolidColorBrush(Colors.Green);
-            //DynamicGrid.ShowGridLines = true;
+            Children.Clear();
 
-            ColumnDefinition gridCol1 = new ColumnDefinition() { Width = GridLength.Auto };
-            ColumnDefinition gridCol2 = new ColumnDefinition() { Width = GridLength.Auto };
-            ColumnDefinition gridCol3 = new ColumnDefinition() { Width = GridLength.Auto };
-            ColumnDefinition gridCol4 = new ColumnDefinition();
-            ColumnDefinition gridCol5 = new ColumnDefinition() { Width = GridLength.Auto };
-            ColumnDefinition gridCol6 = new ColumnDefinition() { Width = GridLength.Auto };
-            ColumnDefinition gridCol7 = new ColumnDefinition() { Width = GridLength.Auto };
+            if (_model == null ||
+                _model.Root == null)
+                return;
 
-            DynamicGrid.ColumnDefinitions.Add(gridCol1);
-            DynamicGrid.ColumnDefinitions.Add(gridCol2);
-            DynamicGrid.ColumnDefinitions.Add(gridCol3);
-            DynamicGrid.ColumnDefinitions.Add(gridCol4);
-            DynamicGrid.ColumnDefinitions.Add(gridCol5);
-            DynamicGrid.ColumnDefinitions.Add(gridCol6);
-            DynamicGrid.ColumnDefinitions.Add(gridCol7);
+            var manager = _model.Root.Manager;
+            if (manager == null)
+                return;
 
-            TextBlock txt1 = new TextBlock() { Text = "Test Left" };
-            TextBlock txt2 = new TextBlock() { Text = "Test Middle" };
-            TextBlock txt3 = new TextBlock() { Text = "Test Left" };
+            foreach (var item in _model.Children)
+            {
+                if (item is ElementConfig conf)
+                {
+                    if (conf.Type != _model.Type.ToString())
+                        throw new Exception("Config is not valide");
+                }
+                else
+                    Children.Add(_model.Root.Manager.UIElementFromModel(item));
+            }
+        }
 
-            var gs1 = new GridSplitter();
-            gs1.HorizontalAlignment = HorizontalAlignment.Center;
-            gs1.VerticalAlignment = VerticalAlignment.Stretch;
-            gs1.Width = 5; //or whatever other height you desire.
+        private void OnLayoutUpdated(object sender, EventArgs e)
+        {
+            _model.ActualWidth = ActualWidth;
+            _model.ActualHeight = ActualHeight;
+        }
 
-            var gs2 = new GridSplitter();
-            gs2.HorizontalAlignment = HorizontalAlignment.Center;
-            gs2.VerticalAlignment = VerticalAlignment.Stretch;
-            gs2.Width = 5; //or whatever other height you desire.
+        protected override Size MeasureOverride(Size availableSize)
+        {
+            double width = availableSize.Width / Children.Count;
+            foreach (var item in Children)
+            {
+                (item as UIElement).Measure(new Size(width, availableSize.Height));
+            }
+            return availableSize;
+        }
 
-            Grid.SetColumn(txt1, 1);
-            Grid.SetColumn(gs1, 2);
-            Grid.SetColumn(txt2, 3);
-            Grid.SetColumn(gs2, 4);
-            Grid.SetColumn(txt3, 5);
-
-            DynamicGrid.Children.Add(txt1);
-            DynamicGrid.Children.Add(gs1);
-            DynamicGrid.Children.Add(txt2);
-            DynamicGrid.Children.Add(gs2);
-            DynamicGrid.Children.Add(txt3);
-
-            // Display grid into a Window
-            this.Children.Add(DynamicGrid);
-            MeasureOverride(new Size(ActualWidth, ActualHeight));
-            ArrangeOverride(new Size(ActualWidth, ActualHeight));
+        protected override Size ArrangeOverride(Size finalSize)
+        {
+            double x = 0;
+            foreach (var item in Children)
+            {
+                (item as UIElement).Arrange(new Rect(new Point(x,0),(item as UIElement).DesiredSize));
+                x += (item as UIElement).DesiredSize.Width;
+            }
+            return base.ArrangeOverride(finalSize);
         }
     }
 }

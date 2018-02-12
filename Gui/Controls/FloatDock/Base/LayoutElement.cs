@@ -1,11 +1,36 @@
-﻿using Instrument.Gui.Controls.FloatDock.Interfaces;
+﻿using Instrument.Gui.Controls.FloatDock.Base.Interfaces;
+using Instrument.Gui.Controls.FloatDock.Layout.LayoutConfigs;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows;
 
-namespace Instrument.Gui.Controls.FloatDock.Layout
+namespace Instrument.Gui.Controls.FloatDock.Base
 {
     public abstract class LayoutElement : DependencyObject, ILayoutElement
     {
+        internal LayoutElement()
+        {
+        }
+
+        #region Config
+
+        private ElementConfig _config = null;
+        public ElementConfig Config
+        {
+            get { return _config; }
+            set
+            {
+                if (_config != value)
+                {
+                    RaisePropertyChanging(nameof(Config));
+                    _config = value;
+                    RaisePropertyChanged(nameof(Config));
+                }
+            }
+        }
+
+        #endregion
+
         #region Root
 
         private ILayoutRoot _root = null;
@@ -42,7 +67,6 @@ namespace Instrument.Gui.Controls.FloatDock.Layout
                     if (oldRoot != _root)
                         OnRootChanged(oldRoot, _root);
                     RaisePropertyChanged(nameof(Parent));
-                    //(Root as ILayoutRoot)?.OnModelUpdated();
                 }
             }
         }
@@ -58,6 +82,21 @@ namespace Instrument.Gui.Controls.FloatDock.Layout
         protected virtual void OnRootChanged(ILayoutRoot oldRoot, ILayoutRoot newRoot)
         {
         }
+
+        #endregion
+
+        #region TagProperty
+
+        public string Tag
+        {
+            get { return (string)GetValue(TagProperty); }
+            set { SetValue(TagProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for Tag.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty TagProperty =
+            DependencyProperty.Register(nameof(Tag), typeof(string), typeof(LayoutElement),
+                new FrameworkPropertyMetadata(""));
 
         #endregion
 

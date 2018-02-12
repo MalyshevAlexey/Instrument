@@ -2,31 +2,82 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:gui="http://schemas.instrument.net/wpf/xaml/gui"
-        Title="MainWindow" Height="500" Width="800">
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        Title="MainWindow" Height="700" Width="800">
 
     <gui:DockManager>
-        <gui:LayoutPanel>
-            <gui:LayoutDocument>
-                
-            </gui:LayoutDocument>
+        <gui:LayoutPanel Type="Dock">
+            <gui:DockConfig/>
+            <gui:LayoutPanel Type="Tab">
+                <gui:TabConfig TabPosition="Top" gui:LayoutPanel.Dock="Bottom"/>
+                <gui:LayoutPanel gui:LayoutPanel.Dock="Bottom"/>
+                <gui:LayoutDocument>
+                    <StackPanel Orientation="Vertical" VerticalAlignment="Bottom">
+                        <Button Content="B11"/>
+                        <Button Content="B12"/>
+                        <Button Content="B13"/>
+                        <TextBlock Height="30" TextAlignment="Center" Background="Aqua" HorizontalAlignment="Stretch" Text="skoolers"/>
+                    </StackPanel>
+                </gui:LayoutDocument>
+                <gui:LayoutDocument>
+                    <Button Content="Test Button2"/>
+                </gui:LayoutDocument>
+            </gui:LayoutPanel>
+            <gui:LayoutPanel Dock="Bottom">
+                <gui:LayoutDocument>
+                    <DockPanel>
+                        <Button Content="Supper Button 77"/>
+                    </DockPanel>
+                </gui:LayoutDocument>
+            </gui:LayoutPanel>
         </gui:LayoutPanel>
     </gui:DockManager>
-    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     <!--<gui:DockManager>
-        <gui:LayoutPanel Type="Dock" Tag="level1">
-            <gui:LayoutPanel Tag="level2_a" gui:LayoutPanel.Dock="Bottom">
-                <gui:LayoutPanel Tag="level3_aa">
+        <gui:LayoutPanel Tag="level1">
+            <gui:DockConfig/>
+            <gui:LayoutPanel Tag="level2_a" Dock="Bottom" DockHeight="150">
+                <gui:LayoutPanel Type="Tab" Tag="level3_aa">
+                    <gui:TabConfig TabPosition="Top"/>
                     <gui:LayoutDocument/>
                     <gui:LayoutDocument/>
                 </gui:LayoutPanel>
                 <gui:LayoutPanel Tag="level3_ab"/>
             </gui:LayoutPanel>
-            <gui:LayoutPanel Tag="level2_b"  gui:LayoutPanel.Dock="Top">
-                <gui:LayoutPanel Tag="level3_ba">
+            <gui:LayoutPanel Tag="level2_b" Dock="Top" DockHeight="100">
+                <gui:LayoutPanel Type="Tab" Tag="level3_ba">
                     <gui:LayoutDocument/>
                 </gui:LayoutPanel>
             </gui:LayoutPanel>
-            <gui:LayoutPanel Tag="level2_c">
+            <gui:LayoutPanel Type="Tab" Tag="level2_c">
+                <gui:LayoutDocument/>
                 <gui:LayoutDocument/>
                 <gui:LayoutDocument/>
                 <gui:LayoutDocument/>

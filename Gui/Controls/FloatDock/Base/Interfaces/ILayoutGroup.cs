@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace Instrument.Gui.Controls.FloatDock.Interfaces
+namespace Instrument.Gui.Controls.FloatDock.Base.Interfaces
 {
-    public interface ILayoutCollection : ILayoutContainer
+    public interface ILayoutGroup : ILayoutContainer
     {
         void InsertChildAt(int index, ILayoutElement element);
         void MoveChild(int oldIndex, int newIndex);

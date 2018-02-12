@@ -1,6 +1,7 @@
-﻿using Instrument.Gui.Controls.FloatDock.Controls;
-using Instrument.Gui.Controls.FloatDock.Interfaces;
+﻿using Instrument.Gui.Controls.FloatDock.Base.Interfaces;
+using Instrument.Gui.Controls.FloatDock.Controls;
 using Instrument.Gui.Controls.FloatDock.Layout;
+using Instrument.Gui.Controls.FloatDock.Layout.LayoutEventArgs;
 using Instrument.Utilities;
 using System;
 using System.Collections;
@@ -26,7 +27,7 @@ namespace Instrument.Gui.Controls.FloatDock
     {
         #region Variables
 
-        
+
 
         #endregion
 
@@ -46,32 +47,100 @@ namespace Instrument.Gui.Controls.FloatDock
 
         #region LayoutRoot
 
-        public static readonly DependencyProperty LayoutRootProperty =
-            DependencyProperty.Register(nameof(LayoutRoot), typeof(ILayoutRoot), typeof(DockManager));
-
         public ILayoutRoot LayoutRoot
         {
             get { return (ILayoutRoot)GetValue(LayoutRootProperty); }
             set { SetValue(LayoutRootProperty, value); }
         }
 
+        public static readonly DependencyProperty LayoutRootProperty =
+            DependencyProperty.Register(nameof(LayoutRoot), typeof(ILayoutRoot), typeof(DockManager),
+                new FrameworkPropertyMetadata(null, OnLayoutRootChanged));
+
+        private static void OnLayoutRootChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            ((DockManager)d).OnLayoutRootChanged(e.OldValue as ILayoutGroup, e.NewValue as ILayoutGroup);
+        }
+
+        public virtual void OnLayoutRootChanged(ILayoutGroup oldLayout, ILayoutGroup newLayout)
+        {
+        }
+
         #endregion
 
         #region LayoutRootPanel
 
-        public static readonly DependencyProperty LayoutRootPanelProperty =
-            DependencyProperty.Register(nameof(LayoutRootPanel), typeof(ILayoutCollection), typeof(DockManager),
-                new FrameworkPropertyMetadata(null, OnLayoutRootPanelChanged));
-
-        public ILayoutCollection LayoutRootPanel
+        public ILayoutGroup LayoutRootPanel
         {
-            get { return (ILayoutCollection)GetValue(LayoutRootPanelProperty); }
+            get { return (ILayoutGroup)GetValue(LayoutRootPanelProperty); }
             set { SetValue(LayoutRootPanelProperty, value); }
         }
 
+        public static readonly DependencyProperty LayoutRootPanelProperty =
+            DependencyProperty.Register(nameof(LayoutRootPanel), typeof(ILayoutGroup), typeof(DockManager),
+                new FrameworkPropertyMetadata(null, OnLayoutRootPanelChanged));
+
         private static void OnLayoutRootPanelChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ((DockManager)d).LayoutRoot.OnLayoutRootPanelChanged(e.OldValue as ILayoutCollection, e.NewValue as ILayoutCollection);
+            ((DockManager)d).OnLayoutRootPanelChanged(e.OldValue as ILayoutGroup, e.NewValue as ILayoutGroup);
+        }
+
+        public virtual void OnLayoutRootPanelChanged(ILayoutGroup oldLayout, ILayoutGroup newLayout)
+        {
+            if (oldLayout != null)
+            {
+
+            }
+            if (newLayout != null)
+            {
+                LayoutRootPanel.Parent = LayoutRoot;
+                LayoutRootPanelChanged?.Invoke(this, EventArgs.Empty);
+                if (RootPanelControl == null)
+                    RootPanelControl = UIElementFromModel(LayoutRootPanel) as ILayoutControl;
+            }
+        }
+
+        public event EventHandler LayoutRootPanelChanged;
+
+        #endregion
+
+        #region RootPanelControl
+
+        /// <summary>
+        /// RootPanelControl Dependency Property
+        /// </summary>
+        public static readonly DependencyProperty RootPanelControlProperty =
+            DependencyProperty.Register(nameof(RootPanelControl), typeof(ILayoutControl), typeof(DockManager),
+                new FrameworkPropertyMetadata(null, OnRootPanelControlChanged));
+
+        /// <summary>
+        /// Gets or sets the RootPanelControl property.  This dependency property 
+        /// indicates the layout panel control which is attached to the Layout.Root property.
+        /// </summary>
+        public ILayoutControl RootPanelControl
+        {
+            get { return (ILayoutControl)GetValue(RootPanelControlProperty); }
+            set { SetValue(RootPanelControlProperty, value); }
+        }
+
+        /// <summary>
+        /// Handles changes to the RootPanelControl property.
+        /// </summary>
+        private static void OnRootPanelControlChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            ((DockManager)d).OnRootPanelControlChanged(e.OldValue as ILayoutControl, e.NewValue as ILayoutControl);
+        }
+
+        public virtual void OnRootPanelControlChanged(ILayoutControl oldControl, ILayoutControl newControl)
+        {
+            if (oldControl != null)
+            {
+
+            }
+            if (newControl != null)
+            {
+                //newControl.InitContent(this, EventArgs.Empty);
+            }
         }
 
         #endregion
@@ -90,8 +159,8 @@ namespace Instrument.Gui.Controls.FloatDock
         {
             get
             {
-                if (LayoutRoot.RootPanelControl != null)
-                    yield return LayoutRoot.RootPanelControl;
+                if (RootPanelControl != null)
+                    yield return RootPanelControl;
             }
         }
 
@@ -100,5 +169,39 @@ namespace Instrument.Gui.Controls.FloatDock
             LogicalTreeDumper.Dump(this);
             VisualTreeDumper.Dump(this);
         }
+
+        protected override void OnInitialized(EventArgs e)
+        {
+            base.OnInitialized(e);
+        }
+
+        //#region FrameworkElement overrides
+
+        //protected override Visual GetVisualChild(int index)
+        //{
+        //    if (index < 0 || index > 1)
+        //        throw new ArgumentOutOfRangeException("index");
+
+        //    return LayoutRoot.RootPanelControl as Visual;
+        //}
+
+        //protected override int VisualChildrenCount
+        //{
+        //    get { return 1; }
+        //}
+
+        //protected override Size MeasureOverride(Size availableSize)
+        //{
+        //    (LayoutRoot.RootPanelControl as UIElement).Measure(availableSize);
+        //    return (LayoutRoot.RootPanelControl as UIElement).DesiredSize;
+        //}
+
+        //protected override Size ArrangeOverride(Size finalSize)
+        //{
+        //    (LayoutRoot.RootPanelControl as UIElement).Arrange(new Rect(finalSize));
+        //    return finalSize;
+        //}
+
+        //#endregion
     }
 }

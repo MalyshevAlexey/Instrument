@@ -36,18 +36,24 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Base\RelayCommand.cs" />
     <Compile Include="Controls\DocumentControl.cs" />
     <Compile Include="Controls\FloatPanelControl.cs" />
     <Compile Include="DockManager.cs" />
-    <Compile Include="Interfaces\ILayoutContainer.cs" />
-    <Compile Include="Interfaces\ILayoutControl.cs" />
-    <Compile Include="Interfaces\ILayoutElement.cs" />
-    <Compile Include="Interfaces\ILayoutCollection.cs" />
-    <Compile Include="Interfaces\ILayoutRoot.cs" />
-    <Compile Include="Layout\LayoutContent.cs" />
+    <Compile Include="Base\Interfaces\ILayoutContainer.cs" />
+    <Compile Include="Base\Interfaces\ILayoutControl.cs" />
+    <Compile Include="Base\Interfaces\ILayoutElement.cs" />
+    <Compile Include="Base\Interfaces\ILayoutGroup.cs" />
+    <Compile Include="Base\Interfaces\ILayoutRoot.cs" />
+    <Compile Include="Base\ElementConfig.cs" />
+    <Compile Include="Layout\Enums\Dock.cs" />
+    <Compile Include="Layout\LayoutConfigs\DockConfig.cs" />
+    <Compile Include="Layout\LayoutConfigs\TabConfig.cs" />
+    <Compile Include="Layout\LayoutEventArgs\LayoutElementEventArgs.cs" />
+    <Compile Include="Base\LayoutContent.cs" />
     <Compile Include="Layout\LayoutDocument.cs" />
-    <Compile Include="Layout\LayoutElement.cs" />
-    <Compile Include="Layout\LayoutCollection.cs" />
+    <Compile Include="Base\LayoutElement.cs" />
+    <Compile Include="Base\LayoutGroup.cs" />
     <Compile Include="Layout\LayoutPanel.cs" />
     <Compile Include="Layout\LayoutRoot.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
