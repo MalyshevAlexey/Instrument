@@ -1,5 +1,6 @@
 ﻿using Instrument.Gui.Controls.FloatDock.Base.Interfaces;
 using Instrument.Gui.Controls.FloatDock.Controls;
+using Instrument.Gui.Controls.FloatDock.Controls.Behaviours;
 using Instrument.Gui.Controls.FloatDock.Layout;
 using Instrument.Gui.Controls.FloatDock.Layout.LayoutEventArgs;
 using Instrument.Utilities;
@@ -147,10 +148,24 @@ namespace Instrument.Gui.Controls.FloatDock
 
         internal UIElement UIElementFromModel(ILayoutElement model)
         {
-            if (model is LayoutPanel)
-                return new FloatPanelControl(model as LayoutPanel);
-            if (model is LayoutDocument)
+            if (model is LayoutPanel panel)
+                return new PanelControl(panel);
+            else if (model is LayoutDocument)
                 return new DocumentControl(model as LayoutDocument);
+
+            return null;
+        }
+
+        internal IPanelBehaviour BehaviourFromType(Panel control, LayoutPanel model)
+        {
+            if (model.Type == Layout.Type.Root)
+                return new RootPanelBehaviour(control, model);
+            if (model.Type == Layout.Type.Dock)
+                return new DockPanelBehaviour(control, model);
+            if (model.Type == Layout.Type.Grid)
+                return null;
+            if (model.Type == Layout.Type.Tab)
+                return null;
 
             return null;
         }

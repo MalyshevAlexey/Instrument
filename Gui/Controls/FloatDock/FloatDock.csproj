@@ -36,9 +36,15 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Base\Interfaces\IBehaviour.cs" />
+    <Compile Include="Base\Interfaces\ILayoutConfigurable.cs" />
+    <Compile Include="Base\Interfaces\ILayoutPositionable.cs" />
+    <Compile Include="Base\Interfaces\IPanelBehaviour.cs" />
     <Compile Include="Base\RelayCommand.cs" />
+    <Compile Include="Controls\Behaviours\DockPanelBehaviour.cs" />
+    <Compile Include="Controls\Behaviours\RootPanelBehaviour.cs" />
     <Compile Include="Controls\DocumentControl.cs" />
-    <Compile Include="Controls\FloatPanelControl.cs" />
+    <Compile Include="Controls\PanelControl.cs" />
     <Compile Include="DockManager.cs" />
     <Compile Include="Base\Interfaces\ILayoutContainer.cs" />
     <Compile Include="Base\Interfaces\ILayoutControl.cs" />
@@ -46,7 +52,6 @@
     <Compile Include="Base\Interfaces\ILayoutGroup.cs" />
     <Compile Include="Base\Interfaces\ILayoutRoot.cs" />
     <Compile Include="Base\ElementConfig.cs" />
-    <Compile Include="Layout\Enums\Dock.cs" />
     <Compile Include="Layout\LayoutConfigs\DockConfig.cs" />
     <Compile Include="Layout\LayoutConfigs\TabConfig.cs" />
     <Compile Include="Layout\LayoutEventArgs\LayoutElementEventArgs.cs" />
@@ -76,6 +81,9 @@
       <Project>{12C585E3-2659-4282-BF33-4A3B968CE8BC}</Project>
       <Name>Utilities</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Layout\Enums\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

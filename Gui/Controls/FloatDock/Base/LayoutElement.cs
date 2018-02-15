@@ -12,25 +12,6 @@ namespace Instrument.Gui.Controls.FloatDock.Base
         {
         }
 
-        #region Config
-
-        private ElementConfig _config = null;
-        public ElementConfig Config
-        {
-            get { return _config; }
-            set
-            {
-                if (_config != value)
-                {
-                    RaisePropertyChanging(nameof(Config));
-                    _config = value;
-                    RaisePropertyChanged(nameof(Config));
-                }
-            }
-        }
-
-        #endregion
-
         #region Root
 
         private ILayoutRoot _root = null;

@@ -12,6 +12,6 @@ namespace Instrument.Gui.Controls.FloatDock.Base
 {
     public abstract class ElementConfig : LayoutElement
     {
-        public abstract string Type { get; }
+        public abstract Layout.Type Type { get; }
     }
 }

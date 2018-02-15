@@ -15,34 +15,20 @@ namespace Instrument.Gui.Controls.FloatDock.Layout
 {
     public enum Dock
     {
-        /// <summary>
-        /// Position this child in the center of the remaining space. 
-        /// </summary> 
         Center,
-
-        /// <summary>
-        /// Position this child at the left of the remaining space. 
-        /// </summary>
         Left,
-
-        /// <summary> 
-        /// Position this child at the top of the remaining space.
-        /// </summary> 
         Top,
-
-        /// <summary> 
-        /// Position this child at the right of the remaining space.
-        /// </summary>
         Right,
-
-        /// <summary>
-        /// Position this child at the bottom of the remaining space. 
-        /// </summary> 
         Bottom,
+        HideLeft,
+        HideTop,
+        HideRight,
+        HideBottom
     }
 
     public enum Type
     {
+        Root,
         Dock,
         Grid,
         Tab,
@@ -53,7 +39,6 @@ namespace Instrument.Gui.Controls.FloatDock.Layout
     {
         public LayoutPanel()
         {
-            //ChildrenCollectionChanged += new EventHandler(OnChildrenCollectionChanged);
         }
 
         #region DockProperty
@@ -62,13 +47,13 @@ namespace Instrument.Gui.Controls.FloatDock.Layout
                 DependencyProperty.RegisterAttached(nameof(Dock), typeof(Dock), typeof(LayoutPanel),
                         new FrameworkPropertyMetadata(Dock.Center, OnDockChanged), IsValidDock);
 
-        public static Dock GetDock(ILayoutElement element)
+        public static Dock GetDock(LayoutElement element)
         {
             if (element == null) { throw new ArgumentNullException("element"); }
             return (Dock)element.GetValue(DockProperty);
         }
 
-        public static void SetDock(ILayoutElement element, Dock dock)
+        public static void SetDock(LayoutElement element, Dock dock)
         {
             if (element == null) { throw new ArgumentNullException("element"); }
             element.SetValue(DockProperty, dock);
@@ -77,7 +62,8 @@ namespace Instrument.Gui.Controls.FloatDock.Layout
         internal static bool IsValidDock(object o)
         {
             Dock dock = (Dock)o;
-            return (dock == Dock.Center || dock == Dock.Left || dock == Dock.Top || dock == Dock.Right || dock == Dock.Bottom);
+            return (dock == Dock.Center || dock == Dock.Left || dock == Dock.Top || dock == Dock.Right || dock == Dock.Bottom
+                || dock == Dock.HideLeft || dock == Dock.HideTop || dock == Dock.HideRight || dock == Dock.HideBottom);
         }
 
         private static void OnDockChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -94,12 +80,15 @@ namespace Instrument.Gui.Controls.FloatDock.Layout
             set { SetValue(TypeProperty, value); }
         }
 
-        // Using a DependencyProperty as the backing store for Type.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty TypeProperty =
             DependencyProperty.Register(nameof(Type), typeof(Type), typeof(LayoutPanel),
-                new FrameworkPropertyMetadata(Type.Dock));
+                new FrameworkPropertyMetadata(Type.Dock, OnTypeChanged));
+
+        private static void OnTypeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            ((LayoutPanel)d).RaisePropertyChanged(nameof(Type));
+        }
 
         #endregion
-
     }
 }

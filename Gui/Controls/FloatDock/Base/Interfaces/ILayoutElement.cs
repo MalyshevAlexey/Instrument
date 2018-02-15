@@ -11,9 +11,6 @@ namespace Instrument.Gui.Controls.FloatDock.Base.Interfaces
     {
         ILayoutContainer Parent { get; set; }
         ILayoutRoot Root { get; }
-        object GetValue(DependencyProperty dp);
-        void SetValue(DependencyProperty dp, object value);
         string Tag { get; set; }
-        ElementConfig Config { get; set; }
     }
 }

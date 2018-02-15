@@ -1,5 +1,6 @@
 ﻿using Instrument.Gui.Controls.FloatDock.Base;
 using Instrument.Gui.Controls.FloatDock.Base.Interfaces;
+using Instrument.Gui.Controls.FloatDock.Controls.Behaviours;
 using Instrument.Gui.Controls.FloatDock.Layout;
 using Instrument.Utilities;
 using System;
@@ -15,11 +16,17 @@ using System.Windows.Threading;
 
 namespace Instrument.Gui.Controls.FloatDock.Controls
 {
-    public class FloatPanelControl : Panel, ILayoutControl
+    public class PanelControl : Panel, ILayoutControl
     {
+        #region Varibles
+
+        IPanelBehaviour behaviour = null;
+
+        #endregion
+
         #region Constructor
 
-        public FloatPanelControl(LayoutPanel model)
+        public PanelControl(LayoutPanel model)
         {
             _model = model;
             _model.PropertyChanged += (s, args) =>
@@ -36,7 +43,7 @@ namespace Instrument.Gui.Controls.FloatDock.Controls
         #region Model
 
         LayoutPanel _model;
-        public ILayoutElement Model
+        public LayoutElement Model
         {
             get { return _model; }
         }
@@ -52,25 +59,21 @@ namespace Instrument.Gui.Controls.FloatDock.Controls
 
         private void UpdateChildren()
         {
-            Children.Clear();
-
-            if (_model == null ||
-                _model.Root == null)
-                return;
-
-            var manager = _model.Root.Manager;
+            var manager = _model?.Root?.Manager;
             if (manager == null)
                 return;
 
-            foreach (var item in _model.Children)
+            behaviour = manager.BehaviourFromType(this, _model);
+            Children.Clear();
+            foreach (ILayoutElement child in _model.Children)
             {
-                if (item is ElementConfig conf)
+                if (child is ElementConfig conf)
                 {
-                    if (conf.Type != _model.Type.ToString())
-                        throw new Exception("Config is not valide");
+                    if (conf.Type != _model.Type) throw new Exception("Config is not valide");
+                    _model.Config = conf;
                 }
                 else
-                    Children.Add(_model.Root.Manager.UIElementFromModel(item));
+                    Children.Add(manager.UIElementFromModel(child));
             }
         }
 
@@ -82,23 +85,12 @@ namespace Instrument.Gui.Controls.FloatDock.Controls
 
         protected override Size MeasureOverride(Size availableSize)
         {
-            double width = availableSize.Width / Children.Count;
-            foreach (var item in Children)
-            {
-                (item as UIElement).Measure(new Size(width, availableSize.Height));
-            }
-            return availableSize;
+            return behaviour.MeasureOverride(availableSize);
         }
 
         protected override Size ArrangeOverride(Size finalSize)
         {
-            double x = 0;
-            foreach (var item in Children)
-            {
-                (item as UIElement).Arrange(new Rect(new Point(x,0),(item as UIElement).DesiredSize));
-                x += (item as UIElement).DesiredSize.Width;
-            }
-            return base.ArrangeOverride(finalSize);
+            return behaviour.ArrangeOverride(finalSize);
         }
     }
 }

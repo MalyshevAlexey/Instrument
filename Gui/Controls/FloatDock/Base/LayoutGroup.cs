@@ -12,6 +12,10 @@ using System.Windows.Controls;
 
 namespace Instrument.Gui.Controls.FloatDock.Base
 {
+    public class ElementCollection<T> : ObservableCollection<T>
+    {
+    }
+
     public abstract class LayoutGroup<T> : LayoutElement, ILayoutGroup where T : ILayoutElement
     {
         #region Constructor
@@ -19,14 +23,13 @@ namespace Instrument.Gui.Controls.FloatDock.Base
         internal LayoutGroup()
         {
             _children.CollectionChanged += new NotifyCollectionChangedEventHandler(_children_CollectionChanged);
-            //if (DesignMode) throw new Exception("designer");
         }
 
         #endregion
 
         private void _children_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            Console.WriteLine(e.Action);
+            //Console.WriteLine(e.Action);
             if (e.OldItems != null)
             {
                 foreach (LayoutElement element in e.OldItems)
@@ -39,10 +42,6 @@ namespace Instrument.Gui.Controls.FloatDock.Base
             {
                 foreach (ILayoutElement element in e.NewItems)
                 {
-                    //Console.WriteLine(
-                    //    ((element is LayoutPanel) ? (element as LayoutPanel).Tag.ToString() : "Document")
-                    //    + " " + ((element is LayoutPanel) ? (element as LayoutPanel).Type.ToString() : "Document")
-                    //    + " " + LayoutPanel.GetDock(element));
                     if (element.Parent != this)
                     {
                         if (element.Parent != null)
@@ -50,10 +49,6 @@ namespace Instrument.Gui.Controls.FloatDock.Base
                         element.Parent = this;
                     }
                 }
-            }
-            if (Root != null)
-            {
-                //throw new Exception(this.ToString());
             }
             ChildrenCollectionChanged?.Invoke(this, EventArgs.Empty);
             RaisePropertyChanged(nameof(ChildrenCount));
@@ -82,8 +77,8 @@ namespace Instrument.Gui.Controls.FloatDock.Base
 
         public event EventHandler ChildrenCollectionChanged;
 
-        ObservableCollection<T> _children = new ObservableCollection<T>();
-        public ObservableCollection<T> Children
+        ElementCollection<T> _children = new ElementCollection<T>();
+        public ElementCollection<T> Children
         {
             get { return _children; }
         }
@@ -147,39 +142,45 @@ namespace Instrument.Gui.Controls.FloatDock.Base
 
         #region Position
 
-        GridLength _dockWidth = new GridLength(1.0, GridUnitType.Star);
-        public GridLength DockWidth
+        #region Width
+
+        GridLength _width = new GridLength(1.0, GridUnitType.Star);
+        public GridLength Width
         {
-            get { return _dockWidth; }
+            get { return _width; }
             set
             {
-                if (DockWidth != value)
+                if (Width != value)
                 {
-                    RaisePropertyChanging("DockWidth");
-                    _dockWidth = value;
-                    RaisePropertyChanged("DockWidth");
+                    RaisePropertyChanging(nameof(Width));
+                    _width = value;
+                    RaisePropertyChanged(nameof(Width));
 
-                    OnDockWidthChanged();
+                    OnWidthChanged();
                 }
             }
         }
 
-        protected virtual void OnDockWidthChanged()
+        protected virtual void OnWidthChanged()
         {
 
         }
 
-        GridLength _dockHeight = new GridLength(1.0, GridUnitType.Star);
-        public GridLength DockHeight
+        #endregion
+
+        #region Height
+
+        GridLength _height = new GridLength(1.0, GridUnitType.Star);
+        public GridLength Height
         {
-            get { return _dockHeight; }
+            get { return _height; }
             set
             {
-                if (DockHeight != value)
+                if (Height != value)
                 {
-                    RaisePropertyChanging("DockHeight");
-                    _dockHeight = value;
-                    RaisePropertyChanged("DockHeight");
+                    RaisePropertyChanging(nameof(Height));
+                    _height = value;
+                    RaisePropertyChanged(nameof(Height));
 
                     OnDockHeightChanged();
                 }
@@ -191,40 +192,42 @@ namespace Instrument.Gui.Controls.FloatDock.Base
 
         }
 
-        #region DockMinWidth
+        #endregion
 
-        private double _dockMinWidth = 25.0;
-        public double DockMinWidth
+        #region MinWidth
+
+        private double _minWidth = 25.0;
+        public double MinWidth
         {
-            get { return _dockMinWidth; }
+            get { return _minWidth; }
             set
             {
-                if (_dockMinWidth != value)
+                if (_minWidth != value)
                 {
                     //MathHelper.AssertIsPositiveOrZero(value);
-                    RaisePropertyChanging("DockMinWidth");
-                    _dockMinWidth = value;
-                    RaisePropertyChanged("DockMinWidth");
+                    RaisePropertyChanging(nameof(MinWidth));
+                    _minWidth = value;
+                    RaisePropertyChanged(nameof(MinWidth));
                 }
             }
         }
 
         #endregion
 
-        #region DockMinHeight
+        #region MinHeight
 
-        private double _dockMinHeight = 25.0;
-        public double DockMinHeight
+        private double _minHeight = 25.0;
+        public double MinHeight
         {
-            get { return _dockMinHeight; }
+            get { return _minHeight; }
             set
             {
-                if (_dockMinHeight != value)
+                if (_minHeight != value)
                 {
                     //MathHelper.AssertIsPositiveOrZero(value);
-                    RaisePropertyChanging("DockMinHeight");
-                    _dockMinHeight = value;
-                    RaisePropertyChanged("DockMinHeight");
+                    RaisePropertyChanging(nameof(MinHeight));
+                    _minHeight = value;
+                    RaisePropertyChanged(nameof(MinHeight));
                 }
             }
         }
@@ -243,6 +246,25 @@ namespace Instrument.Gui.Controls.FloatDock.Base
         {
             get { return _actualHeight; }
             set { _actualHeight = value; }
+        }
+
+        #endregion
+
+        #region Config
+
+        private ElementConfig _config = null;
+        public ElementConfig Config
+        {
+            get { return _config; }
+            set
+            {
+                if (_config != value)
+                {
+                    RaisePropertyChanging(nameof(Config));
+                    _config = value;
+                    RaisePropertyChanged(nameof(Config));
+                }
+            }
         }
 
         #endregion

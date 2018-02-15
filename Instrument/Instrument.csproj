@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>

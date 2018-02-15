@@ -47,7 +47,7 @@ namespace Instrument.Gui.Controls.FloatDock.Controls
         #region Model
 
         LayoutDocument _model;
-        public ILayoutElement Model
+        public LayoutElement Model
         {
             get { return _model; }
         }
@@ -66,22 +66,11 @@ namespace Instrument.Gui.Controls.FloatDock.Controls
 
         private static void OnContentChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            //TestWithPresenter control = (TestWithPresenter)d;
-
-            //if (e.OldValue != null)
-            //{
-            //    control.RemoveLogicalChild(e.OldValue);
-            //}
-
-            //control._view.Content = e.NewValue;
-            //control.logicalChildren[0] = e.NewValue;
             ((DocumentControl)d).OnContentChanged(e.OldValue as UIElement, e.NewValue as UIElement);
-
         }
 
         protected virtual void OnContentChanged(UIElement oldElement, UIElement newElement)
         {
-            
         }
 
         protected override void OnInitialized(EventArgs e)
@@ -163,5 +152,13 @@ namespace Instrument.Gui.Controls.FloatDock.Controls
             return base.ArrangeOverride(finalSize);
         }
 
+        protected override IEnumerator LogicalChildren
+        {
+            get
+            {
+                if (Content != null)
+                    yield return Content;
+            }
+        }
     }
 }

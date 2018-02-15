@@ -1,6 +1,7 @@
 ﻿using Instrument.Utilities;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,7 +23,7 @@ namespace Instrument.Gui.FloatingGui
     {
         public MainWindow()
         {
-            //PerformanceCheck.Execute(InitializeComponent, 1);
+            PerformanceCheck.Execute(InitializeComponent, 1);
             InitializeComponent();
         }
     }

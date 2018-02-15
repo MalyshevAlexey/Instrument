@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 
 namespace Instrument.Gui.Controls.FloatDock.Base.Interfaces
 {
-    public interface ILayoutControl
+    public interface IBehaviour
     {
-        LayoutElement Model { get; }
     }
 }

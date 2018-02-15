@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace Instrument.Gui.Controls.FloatDock.Base.Interfaces
 {
-    public interface ILayoutGroup : ILayoutContainer
+    public interface ILayoutGroup : ILayoutContainer, ILayoutPositionable, ILayoutConfigurable
     {
         void InsertChildAt(int index, ILayoutElement element);
         void MoveChild(int oldIndex, int newIndex);
@@ -15,11 +16,6 @@ namespace Instrument.Gui.Controls.FloatDock.Base.Interfaces
         void RemoveChildAt(int index);
         void ReplaceChildAt(int index, ILayoutElement element);
         event EventHandler ChildrenCollectionChanged;
-        GridLength DockWidth { get; set; }
-        GridLength DockHeight { get; set; }
-        double DockMinWidth { get; set; }
-        double DockMinHeight { get; set; }
-        double ActualWidth { get; set; }
-        double ActualHeight { get; set; }
+        Orientation Orientation { get; }
     }
 }

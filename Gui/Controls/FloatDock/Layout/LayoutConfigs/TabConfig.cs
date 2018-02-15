@@ -9,7 +9,7 @@ namespace Instrument.Gui.Controls.FloatDock.Layout.LayoutConfigs
 {
     public class TabConfig : ElementConfig
     {
-        public override string Type => "Tab";
+        public override Type Type => Type.Tab;
 
         public string TabPosition { get; set; }
     }

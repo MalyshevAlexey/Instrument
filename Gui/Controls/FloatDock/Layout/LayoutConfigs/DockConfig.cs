@@ -9,7 +9,7 @@ namespace Instrument.Gui.Controls.FloatDock.Layout.LayoutConfigs
 {
     public class DockConfig : ElementConfig
     {
-        public override string Type => "Dock";
+        public override Type Type => Type.Dock;
 
         public DockConfig()
         {

@@ -18,7 +18,7 @@ namespace Instrument.Gui.Controls.FloatDock.Layout
     {
         #region Variables
 
-        public ILayoutGroup RootPanel { get; private set; }
+        public ILayoutGroup RootPanel { get; private set; } = null;
 
         #endregion
 
@@ -150,76 +150,69 @@ namespace Instrument.Gui.Controls.FloatDock.Layout
         //    }
         //}
 
-        public void Test(ILayoutContainer current, UIElement control)
-        {
-            foreach (ILayoutElement logicalChild in current.Children)
-            {
-                if (logicalChild is ILayoutContainer)
-                {
-                    UIElement nextControl = Manager.UIElementFromModel(logicalChild);
-                    (control as Panel).Children.Add(nextControl);
-                    Test(logicalChild as ILayoutContainer, nextControl);
-                }
-                else if (logicalChild is LayoutContent)
-                {
-                    UIElement doc = Manager.UIElementFromModel(logicalChild);
-                    (doc as Panel).Children.Add((logicalChild as LayoutContent).Content as UIElement);
-                    (control as Panel).Children.Add(doc);
-                }
-            }
+        //public void Test(ILayoutContainer current, UIElement control)
+        //{
+        //    foreach (ILayoutElement logicalChild in current.Children)
+        //    {
+        //        if (logicalChild is ILayoutContainer)
+        //        {
+        //            UIElement nextControl = Manager.UIElementFromModel(logicalChild);
+        //            (control as Panel).Children.Add(nextControl);
+        //            Test(logicalChild as ILayoutContainer, nextControl);
+        //        }
+        //        else if (logicalChild is LayoutContent)
+        //        {
+        //            UIElement doc = Manager.UIElementFromModel(logicalChild);
+        //            (doc as Panel).Children.Add((logicalChild as LayoutContent).Content as UIElement);
+        //            (control as Panel).Children.Add(doc);
+        //        }
+        //    }
 
-            //if (current is ILayoutContainer)
-            //{
-            //    LayoutDocument document = new LayoutDocument() { Content = new Button() { Content = "Another ertreqwqw" } };
-            //    UIElement nextControl = Manager.UIElementFromModel(document);
-            //    (control as FloatPanelControl).Children.Add(nextControl);
-            //    Test(document, nextControl);
+        //    //if (current is ILayoutContainer)
+        //    //{
+        //    //    LayoutDocument document = new LayoutDocument() { Content = new Button() { Content = "Another ertreqwqw" } };
+        //    //    UIElement nextControl = Manager.UIElementFromModel(document);
+        //    //    (control as FloatPanelControl).Children.Add(nextControl);
+        //    //    Test(document, nextControl);
 
-            //    LayoutDocument document1 = new LayoutDocument() { Content = new Button() { Content = "Another er111111" } };
-            //    UIElement nextControl1 = Manager.UIElementFromModel(document1);
-            //    (control as FloatPanelControl).Children.Add(nextControl1);
-            //    Test(document1, nextControl1);
-            //}
-            //else if (current is LayoutContent)
-            //{
-            //    UIElement doc = Manager.UIElementFromModel(current);
-            //    (doc as Panel).Children.Add((current as LayoutContent).Content as UIElement);
-            //    (control as Panel).Children.Add(doc);
-            //}
-        }
+        //    //    LayoutDocument document1 = new LayoutDocument() { Content = new Button() { Content = "Another er111111" } };
+        //    //    UIElement nextControl1 = Manager.UIElementFromModel(document1);
+        //    //    (control as FloatPanelControl).Children.Add(nextControl1);
+        //    //    Test(document1, nextControl1);
+        //    //}
+        //    //else if (current is LayoutContent)
+        //    //{
+        //    //    UIElement doc = Manager.UIElementFromModel(current);
+        //    //    (doc as Panel).Children.Add((current as LayoutContent).Content as UIElement);
+        //    //    (control as Panel).Children.Add(doc);
+        //    //}
+        //}
 
-        public void RecursiveBuildTree(ILayoutContainer current, UIElement control)
-        {
-            if (current != null)
-            {
-                foreach (ILayoutElement logicalChild in current.Children)
-                {
-                    if (logicalChild is ILayoutContainer)
-                    {
-                        //Console.WriteLine(logicalChild.Tag
-                        //    + " " + (logicalChild as LayoutPanel).Type
-                        //    + " " + LayoutPanel.GetDock(logicalChild));
-
-                        UIElement nextControl = Manager.UIElementFromModel(logicalChild);
-                        (control as Panel).Children.Add(nextControl);
-                        RecursiveBuildTree(logicalChild as ILayoutContainer, nextControl);
-                    }
-                    else if (logicalChild is ElementConfig)
-                    {
-                        //Console.WriteLine("Config");
-                        current.Config = logicalChild as ElementConfig;
-                    }
-                    else if (logicalChild is LayoutContent)
-                    {
-                        //Console.WriteLine(logicalChild.Tag
-                        //    + " " + LayoutPanel.GetDock(logicalChild));
-
-                        UIElement doc = Manager.UIElementFromModel(logicalChild);
-                        (doc as Panel).Children.Add((logicalChild as LayoutContent).Content as UIElement);
-                        (control as Panel).Children.Add(doc);
-                    }
-                }
-            }
-        }
+        //public void RecursiveBuildTree(ILayoutContainer current, UIElement control)
+        //{
+        //    if (current != null)
+        //    {
+        //        foreach (ILayoutElement logicalChild in current.Children)
+        //        {
+        //            if (logicalChild is ILayoutContainer)
+        //            {
+        //                UIElement nextControl = Manager.UIElementFromModel(logicalChild);
+        //                (control as Panel).Children.Add(nextControl);
+        //                RecursiveBuildTree(logicalChild as ILayoutContainer, nextControl);
+        //            }
+        //            else if (logicalChild is ElementConfig config)
+        //            {
+        //                //Console.WriteLine("Config");
+        //                current.Config = config;
+        //            }
+        //            else if (logicalChild is LayoutContent content)
+        //            {
+        //                UIElement doc = Manager.UIElementFromModel(content);
+        //                (doc as Panel).Children.Add(content.Content as UIElement);
+        //                (control as Panel).Children.Add(doc);
+        //            }
+        //        }
+        //    }
+        //}
     }
 }

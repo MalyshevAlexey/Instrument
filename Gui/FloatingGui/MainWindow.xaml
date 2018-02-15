@@ -3,86 +3,109 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:gui="http://schemas.instrument.net/wpf/xaml/gui"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
-        Title="MainWindow" Height="700" Width="800">
+        Title="MainWindow" Height="635.5" Width="795.5">
 
     <gui:DockManager>
-        <gui:LayoutPanel Type="Dock">
-            <gui:DockConfig/>
-            <gui:LayoutPanel Type="Tab">
-                <gui:TabConfig TabPosition="Top" gui:LayoutPanel.Dock="Bottom"/>
-                <gui:LayoutPanel gui:LayoutPanel.Dock="Bottom"/>
+        <gui:LayoutPanel>
+            <gui:LayoutPanel>
                 <gui:LayoutDocument>
-                    <StackPanel Orientation="Vertical" VerticalAlignment="Bottom">
-                        <Button Content="B11"/>
-                        <Button Content="B12"/>
-                        <Button Content="B13"/>
-                        <TextBlock Height="30" TextAlignment="Center" Background="Aqua" HorizontalAlignment="Stretch" Text="skoolers"/>
-                    </StackPanel>
-                </gui:LayoutDocument>
-                <gui:LayoutDocument>
-                    <Button Content="Test Button2"/>
+                    <Button Content="Button First"/>
                 </gui:LayoutDocument>
             </gui:LayoutPanel>
-            <gui:LayoutPanel Dock="Bottom">
+            <gui:LayoutPanel>
                 <gui:LayoutDocument>
-                    <DockPanel>
-                        <Button Content="Supper Button 77"/>
-                    </DockPanel>
+                    <Button Content="Button First"/>
                 </gui:LayoutDocument>
             </gui:LayoutPanel>
         </gui:LayoutPanel>
+        <!--<gui:LayoutPanel>
+            <gui:LayoutPanel Dock="HideBottom">
+                <gui:LayoutDocument>
+                    <Button Content="HideBottom"/>
+                </gui:LayoutDocument>
+            </gui:LayoutPanel>
+            <gui:LayoutPanel Dock="HideRight">
+                <gui:LayoutDocument>
+                    <Button>
+                        <TextBlock Text="HideRight">
+                            <TextBlock.LayoutTransform>
+                                <RotateTransform Angle="90"/>
+                            </TextBlock.LayoutTransform>
+                        </TextBlock>
+                    </Button>
+                </gui:LayoutDocument>
+            </gui:LayoutPanel>
+            <gui:LayoutPanel Dock="HideTop">
+                <gui:LayoutDocument>
+                    <Button Content="HideTop"/>
+                </gui:LayoutDocument>
+            </gui:LayoutPanel>
+            <gui:LayoutPanel Dock="HideLeft">
+                <gui:LayoutDocument>
+                    <Button>
+                        <TextBlock Text="HideLeft">
+                            <TextBlock.LayoutTransform>
+                                <RotateTransform Angle="-90"/>
+                            </TextBlock.LayoutTransform>
+                        </TextBlock>
+                    </Button>
+                </gui:LayoutDocument>
+            </gui:LayoutPanel>
+            <gui:LayoutPanel Type="Dock" Orientation="Horizontal">
+                <gui:LayoutPanel Dock="Right">
+                    <gui:LayoutDocument>
+                        <Button>
+                            <TextBlock Text="PanelRight">
+                                <TextBlock.LayoutTransform>
+                                    <RotateTransform Angle="90"/>
+                                </TextBlock.LayoutTransform>
+                            </TextBlock>
+                        </Button>
+                    </gui:LayoutDocument>
+                </gui:LayoutPanel>
+                <gui:LayoutPanel Dock="Bottom">
+                    <gui:LayoutDocument>
+                        <Button Content="PanelBottom"/>
+                    </gui:LayoutDocument>
+                </gui:LayoutPanel>
+                <gui:LayoutPanel Dock="Left">
+                    <gui:LayoutDocument>
+                        <Button>
+                            <TextBlock Text="PanelLeftFirst">
+                                <TextBlock.LayoutTransform>
+                                    <RotateTransform Angle="90"/>
+                                </TextBlock.LayoutTransform>
+                            </TextBlock>
+                        </Button>
+                    </gui:LayoutDocument>
+                </gui:LayoutPanel>
+                <gui:LayoutPanel Dock="Top">
+                    <gui:LayoutDocument>
+                        <Button Content="PanelTop"/>
+                    </gui:LayoutDocument>
+                </gui:LayoutPanel>
+                <gui:LayoutPanel>
+                    <gui:LayoutDocument>
+                        <Button Content="Center First"/>
+                    </gui:LayoutDocument>
+                </gui:LayoutPanel>
+                <gui:LayoutPanel>
+                    <gui:LayoutDocument>
+                        <Button Content="Center Second"/>
+                    </gui:LayoutDocument>
+                </gui:LayoutPanel>
+                <gui:LayoutPanel>
+                    <gui:LayoutDocument>
+                        <Button Content="Center Third"/>
+                    </gui:LayoutDocument>
+                </gui:LayoutPanel>
+                <gui:LayoutPanel>
+                    <gui:LayoutDocument>
+                        <Button Content="Center Forth"/>
+                    </gui:LayoutDocument>
+                </gui:LayoutPanel>
+            </gui:LayoutPanel>
+        </gui:LayoutPanel>-->
     </gui:DockManager>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <!--<gui:DockManager>
-        <gui:LayoutPanel Tag="level1">
-            <gui:DockConfig/>
-            <gui:LayoutPanel Tag="level2_a" Dock="Bottom" DockHeight="150">
-                <gui:LayoutPanel Type="Tab" Tag="level3_aa">
-                    <gui:TabConfig TabPosition="Top"/>
-                    <gui:LayoutDocument/>
-                    <gui:LayoutDocument/>
-                </gui:LayoutPanel>
-                <gui:LayoutPanel Tag="level3_ab"/>
-            </gui:LayoutPanel>
-            <gui:LayoutPanel Tag="level2_b" Dock="Top" DockHeight="100">
-                <gui:LayoutPanel Type="Tab" Tag="level3_ba">
-                    <gui:LayoutDocument/>
-                </gui:LayoutPanel>
-            </gui:LayoutPanel>
-            <gui:LayoutPanel Type="Tab" Tag="level2_c">
-                <gui:LayoutDocument/>
-                <gui:LayoutDocument/>
-                <gui:LayoutDocument/>
-                <gui:LayoutDocument/>
-            </gui:LayoutPanel>
-        </gui:LayoutPanel>
-    </gui:DockManager>-->
-    
 </Window>
