@@ -8,14 +8,13 @@ using System.Windows.Controls;
 
 namespace Instrument.Gui.Controls.FloatDock.Base.Interfaces
 {
-    public interface ILayoutGroup : ILayoutContainer, ILayoutPositionable, ILayoutConfigurable
+    public interface ILayoutGroup : ILayoutContainer
     {
-        void InsertChildAt(int index, ILayoutElement element);
+        void InsertChildAt(int index, ILayoutObject element);
         void MoveChild(int oldIndex, int newIndex);
-        int IndexOfChild(ILayoutElement element);
+        int IndexOfChild(ILayoutObject element);
         void RemoveChildAt(int index);
-        void ReplaceChildAt(int index, ILayoutElement element);
+        void ReplaceChildAt(int index, ILayoutObject element);
         event EventHandler ChildrenCollectionChanged;
-        Orientation Orientation { get; }
     }
 }

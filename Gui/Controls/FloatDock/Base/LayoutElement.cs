@@ -1,92 +1,181 @@
 ﻿using Instrument.Gui.Controls.FloatDock.Base.Interfaces;
-using Instrument.Gui.Controls.FloatDock.Layout.LayoutConfigs;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace Instrument.Gui.Controls.FloatDock.Base
 {
-    public abstract class LayoutElement : DependencyObject, ILayoutElement
+    public abstract class LayoutElement : LayoutGroup<ILayoutObject>, ILayoutElement
     {
-        internal LayoutElement()
+        #region Orientation
+
+        private Orientation _orientation;
+        public Orientation Orientation
         {
-        }
-
-        #region Root
-
-        private ILayoutRoot _root = null;
-        public ILayoutRoot Root
-        {
-            get
-            {
-                var parent = Parent;
-                while (parent != null && (!(parent is ILayoutRoot)))
-                    parent = parent.Parent;
-                return parent as ILayoutRoot;
-            }
-        }
-
-        #endregion
-
-        #region Parent
-
-        private ILayoutContainer _parent = null;
-        public ILayoutContainer Parent
-        {
-            get { return _parent; }
+            get { return _orientation; }
             set
             {
-                if (_parent != value)
+                if (_orientation != value)
                 {
-                    ILayoutContainer oldValue = _parent;
-                    ILayoutRoot oldRoot = _root;
-                    RaisePropertyChanging(nameof(Parent));
-                    OnParentChanging(oldValue, value);
-                    _parent = value;
-                    OnParentChanged(oldValue, value);
-                    _root = Root;
-                    if (oldRoot != _root)
-                        OnRootChanged(oldRoot, _root);
-                    RaisePropertyChanged(nameof(Parent));
+                    RaisePropertyChanging(nameof(Orientation));
+                    _orientation = value;
+                    RaisePropertyChanged(nameof(Orientation));
                 }
             }
         }
 
-        protected virtual void OnParentChanging(ILayoutContainer oldValue, ILayoutContainer newValue)
+        #endregion
+
+        #region Position
+
+        #region Width
+
+        GridLength _width = new GridLength(1.0, GridUnitType.Star);
+        public GridLength Width
         {
+            get { return _width; }
+            set
+            {
+                if (Width != value)
+                {
+                    RaisePropertyChanging(nameof(Width));
+                    _width = value;
+                    RaisePropertyChanged(nameof(Width));
+
+                    OnWidthChanged();
+                }
+            }
         }
 
-        protected virtual void OnParentChanged(ILayoutContainer oldValue, ILayoutContainer newValue)
+        protected virtual void OnWidthChanged()
         {
-        }
 
-        protected virtual void OnRootChanged(ILayoutRoot oldRoot, ILayoutRoot newRoot)
-        {
         }
 
         #endregion
 
-        #region TagProperty
+        #region Height
 
-        public string Tag
+        GridLength _height = new GridLength(1.0, GridUnitType.Star);
+        public GridLength Height
         {
-            get { return (string)GetValue(TagProperty); }
-            set { SetValue(TagProperty, value); }
+            get { return _height; }
+            set
+            {
+                if (Height != value)
+                {
+                    RaisePropertyChanging(nameof(Height));
+                    _height = value;
+                    RaisePropertyChanged(nameof(Height));
+
+                    OnDockHeightChanged();
+                }
+            }
         }
 
-        // Using a DependencyProperty as the backing store for Tag.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty TagProperty =
-            DependencyProperty.Register(nameof(Tag), typeof(string), typeof(LayoutElement),
-                new FrameworkPropertyMetadata(""));
+        protected virtual void OnDockHeightChanged()
+        {
+
+        }
 
         #endregion
 
-        public event PropertyChangingEventHandler PropertyChanging;
-        protected virtual void RaisePropertyChanging(string propertyName)
-            => PropertyChanging?.Invoke(this, new PropertyChangingEventArgs(propertyName));
+        #region MinWidth
 
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected virtual void RaisePropertyChanged(string propertyName)
-            => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        private double _minWidth = 25.0;
+        public double MinWidth
+        {
+            get { return _minWidth; }
+            set
+            {
+                if (_minWidth != value)
+                {
+                    //MathHelper.AssertIsPositiveOrZero(value);
+                    RaisePropertyChanging(nameof(MinWidth));
+                    _minWidth = value;
+                    RaisePropertyChanged(nameof(MinWidth));
+                }
+            }
+        }
+
+        #endregion
+
+        #region MinHeight
+
+        private double _minHeight = 25.0;
+        public double MinHeight
+        {
+            get { return _minHeight; }
+            set
+            {
+                if (_minHeight != value)
+                {
+                    //MathHelper.AssertIsPositiveOrZero(value);
+                    RaisePropertyChanging(nameof(MinHeight));
+                    _minHeight = value;
+                    RaisePropertyChanged(nameof(MinHeight));
+                }
+            }
+        }
+
+        #endregion
+
+        private double _actualWidth;
+        public double ActualWidth
+        {
+            get { return _actualWidth; }
+            set { _actualWidth = value; }
+        }
+
+        private double _actualHeight;
+        public double ActualHeight
+        {
+            get { return _actualHeight; }
+            set { _actualHeight = value; }
+        }
+
+        #endregion
+
+        #region Config
+
+        private ElementConfig _config = null;
+        public ElementConfig Config
+        {
+            get { return _config; }
+            set
+            {
+                if (_config != value)
+                {
+                    RaisePropertyChanging(nameof(Config));
+                    _config = value;
+                    RaisePropertyChanged(nameof(Config));
+                }
+            }
+        }
+
+        #endregion
+
+        #region TypeProperty
+
+        public Layout.Type Type
+        {
+            get { return (Layout.Type)GetValue(TypeProperty); }
+            set { SetValue(TypeProperty, value); }
+        }
+
+        public static readonly DependencyProperty TypeProperty =
+            DependencyProperty.Register(nameof(Type), typeof(Layout.Type), typeof(LayoutElement),
+                new FrameworkPropertyMetadata(Layout.Type.Dock, OnTypeChanged));
+
+        private static void OnTypeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            ((LayoutElement)d).RaisePropertyChanged(nameof(Type));
+        }
+
+        #endregion
     }
 }

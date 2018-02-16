@@ -4,13 +4,14 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{DF8DC57E-18C4-4636-8849-24C56A4E1B61}</ProjectGuid>
+    <ProjectGuid>{40F43FB2-1B60-456D-9875-B7FDA89FBC1D}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>Instrument.Interfaces</RootNamespace>
-    <AssemblyName>Interfaces</AssemblyName>
+    <RootNamespace>Instrument.Specifications</RootNamespace>
+    <AssemblyName>Specifications</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -35,7 +36,20 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="ISpecification.cs" />
+    <Compile Include="Validation\Composite.cs" />
+    <Compile Include="Validation\NonEmptyString.cs" />
+    <Compile Include="Validation\NotNull.cs" />
+    <Compile Include="Validation\Predicate.cs" />
+    <Compile Include="Validation\Property.cs" />
+    <Compile Include="Spec.cs" />
+    <Compile Include="Validation\Specification.cs" />
+    <Compile Include="Validation\Transform.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Interfaces\Interfaces.csproj">
+      <Project>{4770b255-773c-494b-a2c0-a4c1d94b6bac}</Project>
+      <Name>Interfaces</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

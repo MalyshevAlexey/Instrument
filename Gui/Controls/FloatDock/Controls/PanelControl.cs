@@ -43,7 +43,7 @@ namespace Instrument.Gui.Controls.FloatDock.Controls
         #region Model
 
         LayoutPanel _model;
-        public LayoutElement Model
+        public LayoutObject Model
         {
             get { return _model; }
         }
@@ -64,8 +64,11 @@ namespace Instrument.Gui.Controls.FloatDock.Controls
                 return;
 
             behaviour = manager.BehaviourFromType(this, _model);
+            if (behaviour == null)
+                return;
+
             Children.Clear();
-            foreach (ILayoutElement child in _model.Children)
+            foreach (ILayoutObject child in _model.Children)
             {
                 if (child is ElementConfig conf)
                 {
@@ -75,6 +78,7 @@ namespace Instrument.Gui.Controls.FloatDock.Controls
                 else
                     Children.Add(manager.UIElementFromModel(child));
             }
+            behaviour.UpdateChildren();
         }
 
         private void OnLayoutUpdated(object sender, EventArgs e)

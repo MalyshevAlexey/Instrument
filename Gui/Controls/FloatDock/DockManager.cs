@@ -60,33 +60,28 @@ namespace Instrument.Gui.Controls.FloatDock
 
         private static void OnLayoutRootChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ((DockManager)d).OnLayoutRootChanged(e.OldValue as ILayoutGroup, e.NewValue as ILayoutGroup);
-        }
-
-        public virtual void OnLayoutRootChanged(ILayoutGroup oldLayout, ILayoutGroup newLayout)
-        {
         }
 
         #endregion
 
         #region LayoutRootPanel
 
-        public ILayoutGroup LayoutRootPanel
+        public ILayoutElement LayoutRootPanel
         {
-            get { return (ILayoutGroup)GetValue(LayoutRootPanelProperty); }
+            get { return (ILayoutElement)GetValue(LayoutRootPanelProperty); }
             set { SetValue(LayoutRootPanelProperty, value); }
         }
 
         public static readonly DependencyProperty LayoutRootPanelProperty =
-            DependencyProperty.Register(nameof(LayoutRootPanel), typeof(ILayoutGroup), typeof(DockManager),
+            DependencyProperty.Register(nameof(LayoutRootPanel), typeof(ILayoutElement), typeof(DockManager),
                 new FrameworkPropertyMetadata(null, OnLayoutRootPanelChanged));
 
         private static void OnLayoutRootPanelChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ((DockManager)d).OnLayoutRootPanelChanged(e.OldValue as ILayoutGroup, e.NewValue as ILayoutGroup);
+            ((DockManager)d).OnLayoutRootPanelChanged(e.OldValue as ILayoutElement, e.NewValue as ILayoutElement);
         }
 
-        public virtual void OnLayoutRootPanelChanged(ILayoutGroup oldLayout, ILayoutGroup newLayout)
+        public virtual void OnLayoutRootPanelChanged(ILayoutElement oldLayout, ILayoutElement newLayout)
         {
             if (oldLayout != null)
             {
@@ -140,18 +135,18 @@ namespace Instrument.Gui.Controls.FloatDock
             }
             if (newControl != null)
             {
-                //newControl.InitContent(this, EventArgs.Empty);
+                
             }
         }
 
         #endregion
 
-        internal UIElement UIElementFromModel(ILayoutElement model)
+        internal UIElement UIElementFromModel(ILayoutObject model)
         {
             if (model is LayoutPanel panel)
                 return new PanelControl(panel);
-            else if (model is LayoutDocument)
-                return new DocumentControl(model as LayoutDocument);
+            else if (model is LayoutDocument doc)
+                return new DocumentControl(doc);
 
             return null;
         }

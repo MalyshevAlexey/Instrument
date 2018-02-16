@@ -11,5 +11,6 @@ namespace Instrument.Gui.Controls.FloatDock.Base.Interfaces
     {
         Size MeasureOverride(Size availableSize);
         Size ArrangeOverride(Size finalSize);
+        void UpdateChildren();
     }
 }

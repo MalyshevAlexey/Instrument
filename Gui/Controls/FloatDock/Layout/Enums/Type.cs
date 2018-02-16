@@ -4,10 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Instrument.Gui.Controls.FloatDock.Base.Interfaces
+namespace Instrument.Gui.Controls.FloatDock.Layout
 {
-    public interface ILayoutControl
+    public enum Type
     {
-        LayoutObject Model { get; }
+        Root,
+        Dock,
+        Grid,
+        Tab,
     }
 }

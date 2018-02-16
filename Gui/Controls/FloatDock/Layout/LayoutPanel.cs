@@ -13,29 +13,8 @@ using System.Windows.Markup;
 
 namespace Instrument.Gui.Controls.FloatDock.Layout
 {
-    public enum Dock
-    {
-        Center,
-        Left,
-        Top,
-        Right,
-        Bottom,
-        HideLeft,
-        HideTop,
-        HideRight,
-        HideBottom
-    }
-
-    public enum Type
-    {
-        Root,
-        Dock,
-        Grid,
-        Tab,
-    }
-
     [ContentProperty(nameof(Children))]
-    public class LayoutPanel : LayoutGroup<ILayoutElement>
+    public class LayoutPanel : LayoutElement
     {
         public LayoutPanel()
         {
@@ -47,13 +26,13 @@ namespace Instrument.Gui.Controls.FloatDock.Layout
                 DependencyProperty.RegisterAttached(nameof(Dock), typeof(Dock), typeof(LayoutPanel),
                         new FrameworkPropertyMetadata(Dock.Center, OnDockChanged), IsValidDock);
 
-        public static Dock GetDock(LayoutElement element)
+        public static Dock GetDock(LayoutObject element)
         {
             if (element == null) { throw new ArgumentNullException("element"); }
             return (Dock)element.GetValue(DockProperty);
         }
 
-        public static void SetDock(LayoutElement element, Dock dock)
+        public static void SetDock(LayoutObject element, Dock dock)
         {
             if (element == null) { throw new ArgumentNullException("element"); }
             element.SetValue(DockProperty, dock);
@@ -68,25 +47,6 @@ namespace Instrument.Gui.Controls.FloatDock.Layout
 
         private static void OnDockChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-        }
-
-        #endregion
-
-        #region TypeProperty
-
-        public Type Type
-        {
-            get { return (Type)GetValue(TypeProperty); }
-            set { SetValue(TypeProperty, value); }
-        }
-
-        public static readonly DependencyProperty TypeProperty =
-            DependencyProperty.Register(nameof(Type), typeof(Type), typeof(LayoutPanel),
-                new FrameworkPropertyMetadata(Type.Dock, OnTypeChanged));
-
-        private static void OnTypeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            ((LayoutPanel)d).RaisePropertyChanged(nameof(Type));
         }
 
         #endregion

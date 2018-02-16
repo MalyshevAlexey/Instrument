@@ -9,12 +9,12 @@ namespace Instrument.Gui.Controls.FloatDock.Layout.LayoutEventArgs
 {
     public class LayoutElementEventArgs : EventArgs
     {
-        public LayoutElementEventArgs(LayoutElement element)
+        public LayoutElementEventArgs(LayoutObject element)
         {
             Element = element;
         }
 
-        public LayoutElement Element
+        public LayoutObject Element
         {
             get;
             private set;

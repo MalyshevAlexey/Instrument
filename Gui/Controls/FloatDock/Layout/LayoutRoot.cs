@@ -14,11 +14,11 @@ using System.Windows.Media;
 
 namespace Instrument.Gui.Controls.FloatDock.Layout
 {
-    public class LayoutRoot : LayoutElement, ILayoutRoot
+    public class LayoutRoot : LayoutObject, ILayoutRoot
     {
         #region Variables
 
-        public ILayoutGroup RootPanel { get; private set; } = null;
+        public ILayoutElement RootPanel { get; private set; } = null;
 
         #endregion
 
@@ -54,7 +54,7 @@ namespace Instrument.Gui.Controls.FloatDock.Layout
 
         #region Children
 
-        public IEnumerable<ILayoutElement> Children
+        public IEnumerable<ILayoutObject> Children
         {
             get
             {
@@ -65,16 +65,16 @@ namespace Instrument.Gui.Controls.FloatDock.Layout
 
         public int ChildrenCount => RootPanel == null ? 0 : 1;
 
-        public void RemoveChild(ILayoutElement element)
+        public void RemoveChild(ILayoutObject element)
         {
             if (element == RootPanel)
                 RootPanel = _manager.LayoutRootPanel = null;
         }
 
-        public void ReplaceChild(ILayoutElement oldElement, ILayoutElement newElement)
+        public void ReplaceChild(ILayoutObject oldElement, ILayoutObject newElement)
         {
             if (oldElement == RootPanel)
-                _manager.LayoutRootPanel = (ILayoutGroup)newElement;
+                _manager.LayoutRootPanel = (ILayoutElement)newElement;
         }
 
         #endregion

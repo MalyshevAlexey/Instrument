@@ -14,9 +14,9 @@ namespace Instrument.Gui.Controls.FloatDock.Controls.Behaviours
     public class RootPanelBehaviour : IPanelBehaviour
     {
         private Panel _panel = null;
-        private ILayoutGroup _model = null;
+        private ILayoutElement _model = null;
         
-        public RootPanelBehaviour(Panel panel, ILayoutGroup model)
+        public RootPanelBehaviour(Panel panel, ILayoutElement model)
         {
             _panel = panel;
             _model = model;
@@ -31,7 +31,7 @@ namespace Instrument.Gui.Controls.FloatDock.Controls.Behaviours
             {
                 double width = 0;
                 double height = 0;
-                ILayoutGroup model = (child as ILayoutControl).Model as ILayoutGroup;
+                ILayoutElement model = (child as ILayoutControl).Model as ILayoutElement;
                 
                 if (_model.Orientation == Orientation.Horizontal)
                 {
@@ -121,6 +121,11 @@ namespace Instrument.Gui.Controls.FloatDock.Controls.Behaviours
                 }
             }
             return finalSize;
+        }
+
+        public void UpdateChildren()
+        {
+            
         }
     }
 }

@@ -10,8 +10,8 @@ using System.Windows.Markup;
 
 namespace Instrument.Gui.Controls.FloatDock.Base
 {
-    [ContentProperty("Content")]
-    public abstract class LayoutContent : LayoutElement
+    [ContentProperty(nameof(Content))]
+    public abstract class LayoutContent : LayoutObject
     {
         #region Content
 
@@ -23,9 +23,9 @@ namespace Instrument.Gui.Controls.FloatDock.Base
             {
                 if (_content != value)
                 {
-                    RaisePropertyChanging("Content");
+                    RaisePropertyChanging(nameof(Content));
                     _content = value;
-                    RaisePropertyChanged("Content");
+                    RaisePropertyChanged(nameof(Content));
                 }
             }
         }

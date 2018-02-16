@@ -1,4 +1,5 @@
 ﻿using Instrument.Gui.Controls.FloatDock.Base.Interfaces;
+using Instrument.Gui.Controls.FloatDock.Layout;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -16,7 +17,7 @@ namespace Instrument.Gui.Controls.FloatDock.Base
     {
     }
 
-    public abstract class LayoutGroup<T> : LayoutElement, ILayoutGroup where T : ILayoutElement
+    public abstract class LayoutGroup<T> : LayoutObject, ILayoutGroup where T : ILayoutObject
     {
         #region Constructor
 
@@ -32,7 +33,7 @@ namespace Instrument.Gui.Controls.FloatDock.Base
             //Console.WriteLine(e.Action);
             if (e.OldItems != null)
             {
-                foreach (LayoutElement element in e.OldItems)
+                foreach (LayoutObject element in e.OldItems)
                 {
                     if (element.Parent == this)
                         element.Parent = null;
@@ -40,7 +41,7 @@ namespace Instrument.Gui.Controls.FloatDock.Base
             }
             if (e.NewItems != null)
             {
-                foreach (ILayoutElement element in e.NewItems)
+                foreach (ILayoutObject element in e.NewItems)
                 {
                     if (element.Parent != this)
                     {
@@ -54,25 +55,6 @@ namespace Instrument.Gui.Controls.FloatDock.Base
             RaisePropertyChanged(nameof(ChildrenCount));
         }
 
-        #region Orientation
-
-        private Orientation _orientation;
-        public Orientation Orientation
-        {
-            get { return _orientation; }
-            set
-            {
-                if (_orientation != value)
-                {
-                    RaisePropertyChanging(nameof(Orientation));
-                    _orientation = value;
-                    RaisePropertyChanged(nameof(Orientation));
-                }
-            }
-        }
-
-        #endregion
-
         #region Children
 
         public event EventHandler ChildrenCollectionChanged;
@@ -83,9 +65,9 @@ namespace Instrument.Gui.Controls.FloatDock.Base
             get { return _children; }
         }
 
-        IEnumerable<ILayoutElement> ILayoutContainer.Children
+        IEnumerable<ILayoutObject> ILayoutContainer.Children
         {
-            get { return _children.Cast<ILayoutElement>(); }
+            get { return _children.Cast<ILayoutObject>(); }
         }
 
         public int ChildrenCount
@@ -93,7 +75,7 @@ namespace Instrument.Gui.Controls.FloatDock.Base
             get { return _children.Count; }
         }
 
-        public void InsertChildAt(int index, ILayoutElement element)
+        public void InsertChildAt(int index, ILayoutObject element)
         {
             _children.Insert(index, (T)element);
         }
@@ -111,12 +93,12 @@ namespace Instrument.Gui.Controls.FloatDock.Base
 
         }
 
-        public int IndexOfChild(ILayoutElement element)
+        public int IndexOfChild(ILayoutObject element)
         {
-            return _children.Cast<ILayoutElement>().ToList().IndexOf(element);
+            return _children.Cast<ILayoutObject>().ToList().IndexOf(element);
         }
 
-        public void RemoveChild(ILayoutElement element)
+        public void RemoveChild(ILayoutObject element)
         {
             _children.Remove((T)element);
         }
@@ -126,145 +108,16 @@ namespace Instrument.Gui.Controls.FloatDock.Base
             _children.RemoveAt(childIndex);
         }
 
-        public void ReplaceChild(ILayoutElement oldElement, ILayoutElement newElement)
+        public void ReplaceChild(ILayoutObject oldElement, ILayoutObject newElement)
         {
             int index = _children.IndexOf((T)oldElement);
             _children.Insert(index, (T)newElement);
             _children.RemoveAt(index + 1);
         }
 
-        public void ReplaceChildAt(int index, ILayoutElement element)
+        public void ReplaceChildAt(int index, ILayoutObject element)
         {
             _children[index] = (T)element;
-        }
-
-        #endregion
-
-        #region Position
-
-        #region Width
-
-        GridLength _width = new GridLength(1.0, GridUnitType.Star);
-        public GridLength Width
-        {
-            get { return _width; }
-            set
-            {
-                if (Width != value)
-                {
-                    RaisePropertyChanging(nameof(Width));
-                    _width = value;
-                    RaisePropertyChanged(nameof(Width));
-
-                    OnWidthChanged();
-                }
-            }
-        }
-
-        protected virtual void OnWidthChanged()
-        {
-
-        }
-
-        #endregion
-
-        #region Height
-
-        GridLength _height = new GridLength(1.0, GridUnitType.Star);
-        public GridLength Height
-        {
-            get { return _height; }
-            set
-            {
-                if (Height != value)
-                {
-                    RaisePropertyChanging(nameof(Height));
-                    _height = value;
-                    RaisePropertyChanged(nameof(Height));
-
-                    OnDockHeightChanged();
-                }
-            }
-        }
-
-        protected virtual void OnDockHeightChanged()
-        {
-
-        }
-
-        #endregion
-
-        #region MinWidth
-
-        private double _minWidth = 25.0;
-        public double MinWidth
-        {
-            get { return _minWidth; }
-            set
-            {
-                if (_minWidth != value)
-                {
-                    //MathHelper.AssertIsPositiveOrZero(value);
-                    RaisePropertyChanging(nameof(MinWidth));
-                    _minWidth = value;
-                    RaisePropertyChanged(nameof(MinWidth));
-                }
-            }
-        }
-
-        #endregion
-
-        #region MinHeight
-
-        private double _minHeight = 25.0;
-        public double MinHeight
-        {
-            get { return _minHeight; }
-            set
-            {
-                if (_minHeight != value)
-                {
-                    //MathHelper.AssertIsPositiveOrZero(value);
-                    RaisePropertyChanging(nameof(MinHeight));
-                    _minHeight = value;
-                    RaisePropertyChanged(nameof(MinHeight));
-                }
-            }
-        }
-
-        #endregion
-
-        private double _actualWidth;
-        public double ActualWidth
-        {
-            get { return _actualWidth; }
-            set { _actualWidth = value; }
-        }
-
-        private double _actualHeight;
-        public double ActualHeight
-        {
-            get { return _actualHeight; }
-            set { _actualHeight = value; }
-        }
-
-        #endregion
-
-        #region Config
-
-        private ElementConfig _config = null;
-        public ElementConfig Config
-        {
-            get { return _config; }
-            set
-            {
-                if (_config != value)
-                {
-                    RaisePropertyChanging(nameof(Config));
-                    _config = value;
-                    RaisePropertyChanged(nameof(Config));
-                }
-            }
         }
 
         #endregion

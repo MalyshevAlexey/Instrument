@@ -29,4 +29,15 @@
         </Setter>
     </Style>
 
+    <Style TargetType="{x:Type control:SplitterControl}">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type control:SplitterControl}">
+                    <Border Background="White"/>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
 </ResourceDictionary>

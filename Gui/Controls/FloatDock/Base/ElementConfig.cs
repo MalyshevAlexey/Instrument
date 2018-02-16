@@ -10,7 +10,7 @@ using System.Windows.Markup;
 
 namespace Instrument.Gui.Controls.FloatDock.Base
 {
-    public abstract class ElementConfig : LayoutElement
+    public abstract class ElementConfig : LayoutObject
     {
         public abstract Layout.Type Type { get; }
     }

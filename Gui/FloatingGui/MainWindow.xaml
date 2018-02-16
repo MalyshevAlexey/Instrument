@@ -7,17 +7,18 @@
 
     <gui:DockManager>
         <gui:LayoutPanel>
-            <gui:LayoutPanel>
-                <gui:LayoutDocument>
-                    <Button Content="Button First"/>
-                </gui:LayoutDocument>
+            <gui:LayoutPanel Dock="Top">
+                
             </gui:LayoutPanel>
             <gui:LayoutPanel>
-                <gui:LayoutDocument>
-                    <Button Content="Button First"/>
-                </gui:LayoutDocument>
+                
+            </gui:LayoutPanel>
+            <gui:LayoutPanel>
+                
             </gui:LayoutPanel>
         </gui:LayoutPanel>
+        
+        
         <!--<gui:LayoutPanel>
             <gui:LayoutPanel Dock="HideBottom">
                 <gui:LayoutDocument>

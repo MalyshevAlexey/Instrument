@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace Instrument.Gui.Controls.FloatDock.Base.Interfaces
 {
-    public interface ILayoutContainer : ILayoutElement
+    public interface ILayoutContainer : ILayoutObject
     {
-        IEnumerable<ILayoutElement> Children { get; }
+        IEnumerable<ILayoutObject> Children { get; }
         int ChildrenCount { get; }
-        void RemoveChild(ILayoutElement element);
-        void ReplaceChild(ILayoutElement oldElement, ILayoutElement newElement);
+        void RemoveChild(ILayoutObject element);
+        void ReplaceChild(ILayoutObject oldElement, ILayoutObject newElement);
     }
 }

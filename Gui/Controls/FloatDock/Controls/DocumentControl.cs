@@ -47,7 +47,7 @@ namespace Instrument.Gui.Controls.FloatDock.Controls
         #region Model
 
         LayoutDocument _model;
-        public LayoutElement Model
+        public LayoutObject Model
         {
             get { return _model; }
         }

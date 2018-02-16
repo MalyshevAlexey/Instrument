@@ -38,26 +38,33 @@
   <ItemGroup>
     <Compile Include="Base\Interfaces\IBehaviour.cs" />
     <Compile Include="Base\Interfaces\ILayoutConfigurable.cs" />
+    <Compile Include="Base\Interfaces\ILayoutOrientable.cs" />
+    <Compile Include="Base\Interfaces\ILayoutElement.cs" />
     <Compile Include="Base\Interfaces\ILayoutPositionable.cs" />
+    <Compile Include="Base\Interfaces\ILayoutResizable.cs" />
     <Compile Include="Base\Interfaces\IPanelBehaviour.cs" />
+    <Compile Include="Base\LayoutElement.cs" />
     <Compile Include="Base\RelayCommand.cs" />
     <Compile Include="Controls\Behaviours\DockPanelBehaviour.cs" />
     <Compile Include="Controls\Behaviours\RootPanelBehaviour.cs" />
     <Compile Include="Controls\DocumentControl.cs" />
     <Compile Include="Controls\PanelControl.cs" />
+    <Compile Include="Controls\SplitterControl.cs" />
     <Compile Include="DockManager.cs" />
     <Compile Include="Base\Interfaces\ILayoutContainer.cs" />
     <Compile Include="Base\Interfaces\ILayoutControl.cs" />
-    <Compile Include="Base\Interfaces\ILayoutElement.cs" />
+    <Compile Include="Base\Interfaces\ILayoutObject.cs" />
     <Compile Include="Base\Interfaces\ILayoutGroup.cs" />
     <Compile Include="Base\Interfaces\ILayoutRoot.cs" />
     <Compile Include="Base\ElementConfig.cs" />
+    <Compile Include="Layout\Enums\Dock.cs" />
+    <Compile Include="Layout\Enums\Type.cs" />
     <Compile Include="Layout\LayoutConfigs\DockConfig.cs" />
     <Compile Include="Layout\LayoutConfigs\TabConfig.cs" />
     <Compile Include="Layout\LayoutEventArgs\LayoutElementEventArgs.cs" />
     <Compile Include="Base\LayoutContent.cs" />
     <Compile Include="Layout\LayoutDocument.cs" />
-    <Compile Include="Base\LayoutElement.cs" />
+    <Compile Include="Base\LayoutObject.cs" />
     <Compile Include="Base\LayoutGroup.cs" />
     <Compile Include="Layout\LayoutPanel.cs" />
     <Compile Include="Layout\LayoutRoot.cs" />
@@ -82,8 +89,6 @@
       <Name>Utilities</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Layout\Enums\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace Instrument.Gui.Controls.FloatDock.Controls.Behaviours
 {
@@ -27,7 +28,11 @@ namespace Instrument.Gui.Controls.FloatDock.Controls.Behaviours
             double availableHeight = availableSize.Height;
             List<UIElement> docks = new List<UIElement>();
             List<UIElement> center = new List<UIElement>();
-            foreach (UIElement child in _panel.Children)
+            foreach (UIElement child in _panel.Children.OfType<SplitterControl>())
+            {
+                child.Measure(availableSize);
+            }
+            foreach (UIElement child in _panel.Children.OfType<ILayoutControl>())
             {
                 Layout.Dock dock = LayoutPanel.GetDock((child as ILayoutControl).Model);
                 double width = 0;
@@ -108,8 +113,9 @@ namespace Instrument.Gui.Controls.FloatDock.Controls.Behaviours
             double finalHeight = finalSize.Height;
             List<UIElement> docks = new List<UIElement>();
             List<UIElement> center = new List<UIElement>();
-            foreach (UIElement child in _panel.Children)
+            for (int i = 0; i < _panel.Children.Count; i++)
             {
+                UIElement child = _panel.Children[i];
                 Layout.Dock dock = LayoutPanel.GetDock((child as ILayoutControl).Model);
                 switch (dock)
                 {
@@ -134,20 +140,32 @@ namespace Instrument.Gui.Controls.FloatDock.Controls.Behaviours
                     case Layout.Dock.Top:
                     case Layout.Dock.Bottom:
                         docks.Add(child);
+                        if (i + 1 < _panel.Children.Count &&_panel.Children[i + 1] is SplitterControl)
+                            docks.Add(_panel.Children[++i]);
                         continue;
                     case Layout.Dock.Center:
                         center.Add(child);
+                        if (i + 1 < _panel.Children.Count && _panel.Children[i + 1] is SplitterControl)
+                            center.Add(_panel.Children[++i]);
                         continue;
                 }
             }
-            foreach (UIElement child in docks)
+            for (int i = 0; i < docks.Count; i++)
             {
+                UIElement child = docks[i];
                 Layout.Dock dock = LayoutPanel.GetDock((child as ILayoutControl).Model);
                 switch(dock)
                 {
                     case Layout.Dock.Top:
                         child.Arrange(new Rect(new Point(x, y), child.DesiredSize));
                         y += child.DesiredSize.Height;
+                        finalHeight -= child.DesiredSize.Height;
+                        if (i + 1 < docks.Count && docks[i + 1] is SplitterControl)
+                        {
+                            docks[++i].Arrange(new Rect(new Point(x, y), new Size(finalWidth, 5)));
+                            y += 5;
+                            finalHeight -= 5;
+                        }
                         break;
                     case Layout.Dock.Bottom:
                         child.Arrange(new Rect(new Point(x, finalHeight - child.DesiredSize.Height), child.DesiredSize));
@@ -165,7 +183,7 @@ namespace Instrument.Gui.Controls.FloatDock.Controls.Behaviours
             }
             foreach (UIElement child in center)
             {
-                child.Arrange(new Rect(new Point(x, y), child.DesiredSize));
+                child.Arrange(new Rect(new Point(x, y), child is SplitterControl ? new Size(5, finalHeight) : child.DesiredSize));
                 if (_model.Orientation == Orientation.Horizontal)
                 {
                     x += child.DesiredSize.Width;
@@ -176,6 +194,22 @@ namespace Instrument.Gui.Controls.FloatDock.Controls.Behaviours
                 }
             }
             return finalSize;
+        }
+
+        public void UpdateChildren()
+        {
+            CreateSplitters();
+        }
+
+        private void CreateSplitters()
+        {
+            for (int i = 1; i < _panel.Children.Count; i++)
+            {
+                var splitter = new SplitterControl();
+                splitter.Cursor = _model.Orientation == Orientation.Horizontal ? Cursors.SizeWE : Cursors.SizeNS;
+                _panel.Children.Insert(i, splitter);
+                i++;
+            }
         }
     }
 }
