@@ -1,6 +1,4 @@
 ﻿using Instrument.Gui.Controls.FloatDock.Base.Interfaces;
-using Instrument.Gui.Controls.FloatDock.Layout.LayoutConfigs;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows;
 
@@ -8,10 +6,6 @@ namespace Instrument.Gui.Controls.FloatDock.Base
 {
     public abstract class LayoutObject : DependencyObject, ILayoutObject
     {
-        internal LayoutObject()
-        {
-        }
-
         #region Root
 
         private ILayoutRoot _root = null;
@@ -74,7 +68,6 @@ namespace Instrument.Gui.Controls.FloatDock.Base
             set { SetValue(TagProperty, value); }
         }
 
-        // Using a DependencyProperty as the backing store for Tag.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty TagProperty =
             DependencyProperty.Register(nameof(Tag), typeof(string), typeof(LayoutObject),
                 new FrameworkPropertyMetadata(""));

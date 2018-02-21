@@ -1,4 +1,5 @@
 ﻿using Instrument.Gui.Controls.FloatDock.Base;
+using Instrument.Gui.Controls.FloatDock.Base.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,7 @@ using System.Windows.Markup;
 namespace Instrument.Gui.Controls.FloatDock.Base
 {
     [ContentProperty(nameof(Content))]
-    public abstract class LayoutContent : LayoutObject
+    public abstract class LayoutContent : LayoutObject, ILayoutAttachable
     {
         #region Content
 

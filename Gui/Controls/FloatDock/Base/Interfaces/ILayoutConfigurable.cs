@@ -8,6 +8,6 @@ namespace Instrument.Gui.Controls.FloatDock.Base.Interfaces
 {
     public interface ILayoutConfigurable
     {
-        ElementConfig Config { get; set; }
+        LayoutConfig Config { get; set; }
     }
 }

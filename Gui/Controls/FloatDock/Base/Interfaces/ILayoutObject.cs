@@ -1,9 +1,4 @@
-﻿using Instrument.Gui.Controls.FloatDock.Base;
-using Instrument.Gui.Controls.FloatDock.Layout;
-using Instrument.Gui.Controls.FloatDock.Layout.LayoutConfigs;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Windows;
+﻿using System.ComponentModel;
 
 namespace Instrument.Gui.Controls.FloatDock.Base.Interfaces
 {

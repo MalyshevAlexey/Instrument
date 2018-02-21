@@ -142,7 +142,7 @@ namespace Instrument.Gui.Controls.FloatDock.Controls
         {
             //Console.WriteLine(availableSize.Width + " " + availableSize.Height);
             Content?.Measure(availableSize);
-            return availableSize;
+            return new Size(availableSize.Width, 200);
         }
 
         protected override Size ArrangeOverride(Size finalSize)
@@ -150,6 +150,11 @@ namespace Instrument.Gui.Controls.FloatDock.Controls
             //Console.WriteLine(finalSize.Width + " " + finalSize.Height);
             Content?.Arrange(new Rect(finalSize));
             return base.ArrangeOverride(finalSize);
+        }
+
+        public void SetChildren()
+        {
+            throw new NotImplementedException();
         }
 
         protected override IEnumerator LogicalChildren
@@ -160,5 +165,7 @@ namespace Instrument.Gui.Controls.FloatDock.Controls
                     yield return Content;
             }
         }
+
+        public IEnumerable Children => throw new NotImplementedException();
     }
 }

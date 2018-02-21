@@ -6,19 +6,16 @@
         Title="MainWindow" Height="635.5" Width="795.5">
 
     <gui:DockManager>
-        <gui:LayoutPanel>
-            <gui:LayoutPanel Dock="Top">
-                
-            </gui:LayoutPanel>
+        <gui:LayoutPanel Type="Dock" Style="Test">
+            <gui:LayoutPanel/>
             <gui:LayoutPanel>
-                
-            </gui:LayoutPanel>
-            <gui:LayoutPanel>
-                
+                <gui:LayoutDocument>
+                    <Button Content="Button"/>
+                </gui:LayoutDocument>
             </gui:LayoutPanel>
         </gui:LayoutPanel>
-        
-        
+
+
         <!--<gui:LayoutPanel>
             <gui:LayoutPanel Dock="HideBottom">
                 <gui:LayoutDocument>

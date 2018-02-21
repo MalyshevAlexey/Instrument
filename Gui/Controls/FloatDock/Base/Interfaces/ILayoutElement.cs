@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Instrument.Gui.Controls.FloatDock.Layout;
 
 namespace Instrument.Gui.Controls.FloatDock.Base.Interfaces
 {
-    public interface ILayoutElement : ILayoutGroup, ILayoutPositionable, ILayoutConfigurable, ILayoutOrientable, ILayoutResizable
+    public interface ILayoutElement : ILayoutGroup, ILayoutPositionable, ILayoutConfigurable, ILayoutOrientable, ILayoutResizable, ILayoutStyleable, ILayoutAttachable
     {
+        Type Type { get; }
     }
 }

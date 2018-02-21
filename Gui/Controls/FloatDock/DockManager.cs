@@ -1,8 +1,10 @@
-﻿using Instrument.Gui.Controls.FloatDock.Base.Interfaces;
+﻿using Instrument.Gui.Controls.FloatDock.Base;
+using Instrument.Gui.Controls.FloatDock.Base.Interfaces;
 using Instrument.Gui.Controls.FloatDock.Controls;
 using Instrument.Gui.Controls.FloatDock.Controls.Behaviours;
 using Instrument.Gui.Controls.FloatDock.Layout;
 using Instrument.Gui.Controls.FloatDock.Layout.LayoutEventArgs;
+using Instrument.Gui.Controls.FloatDock.Themes;
 using Instrument.Utilities;
 using System;
 using System.Collections;
@@ -28,7 +30,7 @@ namespace Instrument.Gui.Controls.FloatDock
     {
         #region Variables
 
-
+        public Size AvailableSize { get; private set; }
 
         #endregion
 
@@ -42,6 +44,8 @@ namespace Instrument.Gui.Controls.FloatDock
         public DockManager()
         {
             LayoutRoot = new LayoutRoot(this);
+            Theme = new GenericTheme();
+            Resources.MergedDictionaries.Add(new ResourceDictionary() { Source = Theme.GetThemeUri() });
         }
 
         #endregion
@@ -141,27 +145,63 @@ namespace Instrument.Gui.Controls.FloatDock
 
         #endregion
 
+        #region Theme
+
+        public static readonly DependencyProperty ThemeProperty =
+            DependencyProperty.Register(nameof(Theme), typeof(Theme), typeof(DockManager),
+                new FrameworkPropertyMetadata(null, OnThemeChanged));
+
+        public Theme Theme
+        {
+            get { return (Theme)GetValue(ThemeProperty); }
+            set { SetValue(ThemeProperty, value); }
+        }
+
+        private static void OnThemeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            ((DockManager)d).OnThemeChanged(e);
+        }
+
+        /// <summary>
+        /// Provides derived classes an opportunity to handle changes to the Theme property.
+        /// </summary>
+        protected virtual void OnThemeChanged(DependencyPropertyChangedEventArgs e)
+        {
+            var oldTheme = e.OldValue as Theme;
+            var newTheme = e.NewValue as Theme;
+            var resources = this.Resources;
+            if (oldTheme != null)
+            {
+                var resourceDictionaryToRemove =
+                    resources.MergedDictionaries.FirstOrDefault(r => r.Source == oldTheme.GetThemeUri());
+                if (resourceDictionaryToRemove != null)
+                    resources.MergedDictionaries.Remove(
+                        resourceDictionaryToRemove);
+            }
+
+            if (newTheme != null)
+            {
+                resources.MergedDictionaries.Add(new ResourceDictionary() { Source = newTheme.GetThemeUri() });
+            }
+        }
+
+        #endregion
+
         internal UIElement UIElementFromModel(ILayoutObject model)
         {
             if (model is LayoutPanel panel)
                 return new PanelControl(panel);
-            else if (model is LayoutDocument doc)
+            if (model is LayoutDocument doc)
                 return new DocumentControl(doc);
 
             return null;
         }
 
-        internal IPanelBehaviour BehaviourFromType(Panel control, LayoutPanel model)
+        internal IBehaviour BehaviourFromType(Layout.Type type)
         {
-            if (model.Type == Layout.Type.Root)
-                return new RootPanelBehaviour(control, model);
-            if (model.Type == Layout.Type.Dock)
-                return new DockPanelBehaviour(control, model);
-            if (model.Type == Layout.Type.Grid)
-                return null;
-            if (model.Type == Layout.Type.Tab)
-                return null;
-
+            if (type == Layout.Type.Dock)
+                return new DockPanelBehaviour();
+            
             return null;
         }
 
@@ -180,38 +220,10 @@ namespace Instrument.Gui.Controls.FloatDock
             VisualTreeDumper.Dump(this);
         }
 
-        protected override void OnInitialized(EventArgs e)
-        {
-            base.OnInitialized(e);
-        }
-
-        //#region FrameworkElement overrides
-
-        //protected override Visual GetVisualChild(int index)
-        //{
-        //    if (index < 0 || index > 1)
-        //        throw new ArgumentOutOfRangeException("index");
-
-        //    return LayoutRoot.RootPanelControl as Visual;
-        //}
-
-        //protected override int VisualChildrenCount
-        //{
-        //    get { return 1; }
-        //}
-
         //protected override Size MeasureOverride(Size availableSize)
         //{
-        //    (LayoutRoot.RootPanelControl as UIElement).Measure(availableSize);
-        //    return (LayoutRoot.RootPanelControl as UIElement).DesiredSize;
+        //    AvailableSize = availableSize;
+        //    return base.MeasureOverride(availableSize);
         //}
-
-        //protected override Size ArrangeOverride(Size finalSize)
-        //{
-        //    (LayoutRoot.RootPanelControl as UIElement).Arrange(new Rect(finalSize));
-        //    return finalSize;
-        //}
-
-        //#endregion
     }
 }

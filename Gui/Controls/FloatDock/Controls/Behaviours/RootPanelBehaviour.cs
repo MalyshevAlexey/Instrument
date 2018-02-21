@@ -11,121 +11,116 @@ using System.Windows.Controls;
 
 namespace Instrument.Gui.Controls.FloatDock.Controls.Behaviours
 {
-    public class RootPanelBehaviour : IPanelBehaviour
-    {
-        private Panel _panel = null;
-        private ILayoutElement _model = null;
-        
-        public RootPanelBehaviour(Panel panel, ILayoutElement model)
-        {
-            _panel = panel;
-            _model = model;
-        }
+    //public class RootPanelBehaviour : PanelBehaviour
+    //{ 
+        //public RootPanelBehaviour(ILayoutControl  panel) : base(panel)
+        //{
+        //}
 
-        public Size MeasureOverride(Size availableSize)
-        {
-            double availableWidth = availableSize.Width;
-            double availableHeight = availableSize.Height;
-            List<UIElement> stars = new List<UIElement>();
-            foreach (UIElement child in _panel.Children)
-            {
-                double width = 0;
-                double height = 0;
-                ILayoutElement model = (child as ILayoutControl).Model as ILayoutElement;
+        //public override Size MeasureOverride(Size availableSize)
+        //{
+        //    double availableWidth = availableSize.Width;
+        //    double availableHeight = availableSize.Height;
+        //    List<UIElement> stars = new List<UIElement>();
+        //    foreach (UIElement child in Panel.Children)
+        //    {
+        //        double width = 0;
+        //        double height = 0;
+        //        ILayoutElement model = (child as ILayoutControl).Model as ILayoutElement;
                 
-                if (_model.Orientation == Orientation.Horizontal)
-                {
-                    if (model.Width.IsAbsolute)
-                    {
-                        width = model.Width.Value;
-                        height = availableSize.Height;
-                        availableWidth -= width;
-                    }
-                    else if (model.Width.IsStar)
-                    {
-                        stars.Add(child);
-                        continue;
-                    }
-                }
-                else if (_model.Orientation == Orientation.Vertical)
-                {
-                    if (model.Height.IsAbsolute)
-                    {
-                        width = availableSize.Width;
-                        height = model.Height.Value;
-                        availableHeight -= height;
-                    }
-                    else if (model.Height.IsStar)
-                    {
-                        stars.Add(child);
-                        continue;
-                    }
-                }
-                child.Measure(new Size(width, height));
-            }
-            foreach (UIElement child in stars)
-            {
-                double width = 0;
-                double height = 0;
-                if (_model.Orientation == Orientation.Horizontal)
-                {
-                    width = availableWidth / stars.Count;
-                    height = availableSize.Height;
-                }
-                else if (_model.Orientation == Orientation.Vertical)
-                {
-                    width = availableSize.Width;
-                    height = availableHeight / stars.Count;
-                }
-                child.Measure(new Size(width, height));
-            }
+        //        if (Model.Orientation == Orientation.Horizontal)
+        //        {
+        //            if (model.Width.IsAbsolute)
+        //            {
+        //                width = model.Width.Value;
+        //                height = availableSize.Height;
+        //                availableWidth -= width;
+        //            }
+        //            else if (model.Width.IsStar)
+        //            {
+        //                stars.Add(child);
+        //                continue;
+        //            }
+        //        }
+        //        else if (Model.Orientation == Orientation.Vertical)
+        //        {
+        //            if (model.Height.IsAbsolute)
+        //            {
+        //                width = availableSize.Width;
+        //                height = model.Height.Value;
+        //                availableHeight -= height;
+        //            }
+        //            else if (model.Height.IsStar)
+        //            {
+        //                stars.Add(child);
+        //                continue;
+        //            }
+        //        }
+        //        child.Measure(new Size(width, height));
+        //    }
+        //    foreach (UIElement child in stars)
+        //    {
+        //        double width = 0;
+        //        double height = 0;
+        //        if (Model.Orientation == Orientation.Horizontal)
+        //        {
+        //            width = availableWidth / stars.Count;
+        //            height = availableSize.Height;
+        //        }
+        //        else if (Model.Orientation == Orientation.Vertical)
+        //        {
+        //            width = availableSize.Width;
+        //            height = availableHeight / stars.Count;
+        //        }
+        //        child.Measure(new Size(width, height));
+        //    }
 
             
-            //double width = 0;
-            //double height = 0;
-            //if (_model.Orientation == Orientation.Horizontal)
-            //{
-            //    width = availableSize.Width / _panel.Children.Count;
-            //    height = availableSize.Height;
-            //}
-            //else if (_model.Orientation == Orientation.Vertical)
-            //{
-            //    width = availableSize.Width;
-            //    height = availableSize.Height / _panel.Children.Count;
-            //}
-            //foreach (var item in _panel.Children)
-            //{
-            //    (item as UIElement).Measure(new Size(width, height));
-            //}
-            return availableSize;
-        }
+        //    //double width = 0;
+        //    //double height = 0;
+        //    //if (Model.Orientation == Orientation.Horizontal)
+        //    //{
+        //    //    width = availableSize.Width / Panel.Children.Count;
+        //    //    height = availableSize.Height;
+        //    //}
+        //    //else if (Model.Orientation == Orientation.Vertical)
+        //    //{
+        //    //    width = availableSize.Width;
+        //    //    height = availableSize.Height / Panel.Children.Count;
+        //    //}
+        //    //foreach (var item in Panel.Children)
+        //    //{
+        //    //    (item as UIElement).Measure(new Size(width, height));
+        //    //}
+        //    return availableSize;
+        //}
 
-        public Size ArrangeOverride(Size finalSize)
-        {
-            if (_model.Orientation == Orientation.Horizontal)
-            {
-                double x = 0;
-                foreach (UIElement child in _panel.Children)
-                {
-                    child.Arrange(new Rect(new Point(x, 0), child.DesiredSize));
-                    x += child.DesiredSize.Width;
-                }
-            }
-            else if (_model.Orientation == Orientation.Vertical)
-            {
-                double y = 0;
-                foreach (UIElement child in _panel.Children)
-                {
-                    child.Arrange(new Rect(new Point(0, y), child.DesiredSize));
-                    y += child.DesiredSize.Height;
-                }
-            }
-            return finalSize;
-        }
+        //public override Size ArrangeOverride(Size finalSize)
+        //{
+        //    if (Model.Orientation == Orientation.Horizontal)
+        //    {
+        //        double x = 0;
+        //        foreach (UIElement child in Panel.Children)
+        //        {
+        //            child.Arrange(new Rect(new Point(x, 0), child.DesiredSize));
+        //            x += child.DesiredSize.Width;
+        //        }
+        //    }
+        //    else if (Model.Orientation == Orientation.Vertical)
+        //    {
+        //        double y = 0;
+        //        foreach (UIElement child in Panel.Children)
+        //        {
+        //            child.Arrange(new Rect(new Point(0, y), child.DesiredSize));
+        //            y += child.DesiredSize.Height;
+        //        }
+        //    }
+        //    return finalSize;
+        //}
 
-        public void UpdateChildren()
-        {
+        //public override void UpdateChildren()
+        //{
             
-        }
-    }
+        //}
+    //}
 }

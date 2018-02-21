@@ -1,16 +1,6 @@
 ﻿using Instrument.Gui.Controls.FloatDock.Base;
 using Instrument.Gui.Controls.FloatDock.Base.Interfaces;
-using Instrument.Gui.Controls.FloatDock.Controls;
-using Instrument.Gui.Controls.FloatDock.Layout.LayoutConfigs;
-using Instrument.Gui.Controls.FloatDock.Layout.LayoutEventArgs;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media;
 
 namespace Instrument.Gui.Controls.FloatDock.Layout
 {

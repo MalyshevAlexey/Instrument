@@ -4,6 +4,7 @@ using Instrument.Gui.Controls.FloatDock.Controls.Behaviours;
 using Instrument.Gui.Controls.FloatDock.Layout;
 using Instrument.Utilities;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,6 +22,7 @@ namespace Instrument.Gui.Controls.FloatDock.Controls
         #region Varibles
 
         IPanelBehaviour behaviour = null;
+        //DockManager manager = null;
 
         #endregion
 
@@ -50,6 +52,8 @@ namespace Instrument.Gui.Controls.FloatDock.Controls
 
         #endregion
 
+        IEnumerable ILayoutControl.Children => Children;
+
         protected override void OnInitialized(EventArgs e)
         {
             base.OnInitialized(e);
@@ -63,22 +67,53 @@ namespace Instrument.Gui.Controls.FloatDock.Controls
             if (manager == null)
                 return;
 
-            behaviour = manager.BehaviourFromType(this, _model);
+            behaviour = manager.BehaviourFromType(_model.Type) as IPanelBehaviour;
             if (behaviour == null)
                 return;
 
-            Children.Clear();
-            foreach (ILayoutObject child in _model.Children)
+            behaviour.Initialize(this);
+
+
+            if (manager.Resources[_model.Style] is Style style)
             {
-                if (child is ElementConfig conf)
-                {
-                    if (conf.Type != _model.Type) throw new Exception("Config is not valide");
-                    _model.Config = conf;
-                }
-                else
-                    Children.Add(manager.UIElementFromModel(child));
+                
             }
+
+            
+
+
+
+            Children.Clear();
+
+            //if (manager.Resources[_model.Style] is Style style)
+            //{
+            //    TemplateControl template = new TemplateControl(_model);
+            //    template.Style = style;
+            //    template.SetChildren();
+            //    behaviour.Initialize(template);
+            //    Children.Add(template);
+            //}
+            //else
+            //{
+            //    SetChildren();
+            //    behaviour.Initialize(this);
+            //}
+                
             behaviour.UpdateChildren();
+        }
+
+        public void SetChildren()
+        {
+            //foreach (ILayoutObject child in _model.Children)
+            //{
+            //    if (child is ElementConfig conf)
+            //    {
+            //        if (conf.Type != _model.Type) throw new Exception("Config is not valide");
+            //        _model.Config = conf;
+            //    }
+            //    else
+            //        Children.Add(manager.UIElementFromModel(child));
+            //}
         }
 
         private void OnLayoutUpdated(object sender, EventArgs e)

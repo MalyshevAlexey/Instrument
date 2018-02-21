@@ -8,5 +8,6 @@ namespace Instrument.Gui.Controls.FloatDock.Base.Interfaces
 {
     public interface IBehaviour
     {
+        void Initialize(ILayoutControl control);
     }
 }

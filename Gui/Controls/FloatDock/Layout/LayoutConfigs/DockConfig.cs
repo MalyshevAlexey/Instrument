@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Instrument.Gui.Controls.FloatDock.Layout.LayoutConfigs
 {
-    public class DockConfig : ElementConfig
+    public class DockConfig : LayoutConfig
     {
         public override Type Type => Type.Dock;
 

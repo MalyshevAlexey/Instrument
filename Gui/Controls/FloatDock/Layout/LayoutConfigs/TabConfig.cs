@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Instrument.Gui.Controls.FloatDock.Layout.LayoutConfigs
 {
-    public class TabConfig : ElementConfig
+    public class TabConfig : LayoutConfig
     {
         public override Type Type => Type.Tab;
 

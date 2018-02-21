@@ -17,23 +17,23 @@ namespace Instrument.Gui.Controls.FloatDock.Base
     {
     }
 
-    public abstract class LayoutGroup<T> : LayoutObject, ILayoutGroup where T : ILayoutObject
+    public abstract class LayoutGroup<T> : LayoutObject, ILayoutGroup where T : ILayoutAttachable
     {
         #region Constructor
 
         internal LayoutGroup()
         {
-            _children.CollectionChanged += new NotifyCollectionChangedEventHandler(_children_CollectionChanged);
+            _children.CollectionChanged += new NotifyCollectionChangedEventHandler(OnCollectionChanged);
         }
 
         #endregion
 
-        private void _children_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             //Console.WriteLine(e.Action);
             if (e.OldItems != null)
             {
-                foreach (LayoutObject element in e.OldItems)
+                foreach (ILayoutObject element in e.OldItems)
                 {
                     if (element.Parent == this)
                         element.Parent = null;
