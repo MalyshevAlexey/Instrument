@@ -51,6 +51,7 @@
     <Compile Include="Base\RelayCommand.cs" />
     <Compile Include="Controls\Behaviours\DockPanelBehaviour.cs" />
     <Compile Include="Controls\Behaviours\RootPanelBehaviour.cs" />
+    <Compile Include="Controls\Behaviours\StyledPanelBehaviour.cs" />
     <Compile Include="Controls\DocumentControl.cs" />
     <Compile Include="Controls\PanelControl.cs" />
     <Compile Include="Controls\SplitterControl.cs" />

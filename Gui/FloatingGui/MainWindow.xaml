@@ -6,11 +6,17 @@
         Title="MainWindow" Height="635.5" Width="795.5">
 
     <gui:DockManager>
-        <gui:LayoutPanel Type="Dock" Style="Test">
-            <gui:LayoutPanel/>
-            <gui:LayoutPanel>
+        <gui:LayoutPanel Type="Dock" Style="Test" Tag="root">
+            <gui:LayoutPanel Style="Test2" Tag="First"/>
+            <gui:LayoutPanel Style="Test2" Tag="Second">
                 <gui:LayoutDocument>
-                    <Button Content="Button"/>
+                    <Button Content="Button1"/>
+                </gui:LayoutDocument>
+                <gui:LayoutDocument>
+                    <Button Content="Button2"/>
+                </gui:LayoutDocument>
+                <gui:LayoutDocument>
+                    <Button Content="Button3"/>
                 </gui:LayoutDocument>
             </gui:LayoutPanel>
         </gui:LayoutPanel>

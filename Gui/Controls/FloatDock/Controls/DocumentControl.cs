@@ -1,6 +1,7 @@
 ﻿using Instrument.Gui.Controls.FloatDock.Base;
 using Instrument.Gui.Controls.FloatDock.Base.Interfaces;
 using Instrument.Gui.Controls.FloatDock.Layout;
+using Instrument.Utilities;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -11,6 +12,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
 
@@ -167,5 +169,16 @@ namespace Instrument.Gui.Controls.FloatDock.Controls
         }
 
         public IEnumerable Children => throw new NotImplementedException();
+
+        protected override void OnMouseRightButtonDown(MouseButtonEventArgs e)
+        {
+            //VisualTreeDumper.Dump(this);
+            Console.WriteLine("pressed");
+            PanelControl panel = VisualTreeHelper.GetParent(this) as PanelControl;
+            panel.flag = true;
+            //_model?.Parent.flag = true;
+            _model?.Parent.RemoveChild(_model);
+            //_model.Content = null;
+        }
     }
 }

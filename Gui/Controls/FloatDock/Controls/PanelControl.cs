@@ -22,7 +22,7 @@ namespace Instrument.Gui.Controls.FloatDock.Controls
         #region Varibles
 
         IPanelBehaviour behaviour = null;
-        //DockManager manager = null;
+        public bool flag = false;
 
         #endregion
 
@@ -35,7 +35,11 @@ namespace Instrument.Gui.Controls.FloatDock.Controls
             {
                 Dispatcher.BeginInvoke(new Action(() =>
                 {
-                    UpdateChildren();
+                    if (flag)
+                    {
+                        UpdateChildren();
+                        flag = false;
+                    }
                 }), DispatcherPriority.Normal, null);
             };
         }
@@ -44,7 +48,7 @@ namespace Instrument.Gui.Controls.FloatDock.Controls
 
         #region Model
 
-        LayoutPanel _model;
+        LayoutElement _model;
         public LayoutObject Model
         {
             get { return _model; }
@@ -67,53 +71,50 @@ namespace Instrument.Gui.Controls.FloatDock.Controls
             if (manager == null)
                 return;
 
-            behaviour = manager.BehaviourFromType(_model.Type) as IPanelBehaviour;
+            if (manager.Resources[_model.Style] is Style style)
+            {
+                LayoutStyle layoutStyle = new LayoutStyle(_model);
+                LayoutPanel panel = new LayoutPanel();
+                int count = _model.ChildrenCount;
+                for (int i = 0; i < count; i++)
+                    panel.Children.Add(_model.Children.First());
+                panel.Parent = layoutStyle;
+                panel.Type = _model.Type;
+                layoutStyle.Style = _model.Style;
+                layoutStyle.Children.Add(panel);
+                _model.Children.Add(layoutStyle);
+                //_model = layoutStyle;
+                behaviour = new StyledPanelBehaviour();
+                //behaviour.Initialize(this);
+            }
+            else
+            {
+                behaviour = manager.BehaviourFromType(_model.Type) as IPanelBehaviour;
+            }
+            
             if (behaviour == null)
                 return;
 
             behaviour.Initialize(this);
+            Children.Clear();  
 
-
-            if (manager.Resources[_model.Style] is Style style)
+            foreach (ILayoutObject child in _model.Children)
             {
-                
+                if (child is LayoutConfig conf)
+                {
+                    if (conf.Type != _model.Type) throw new Exception("Config is not valide");
+                    _model.Config = conf;
+                }
+                else
+                    Children.Add(manager.UIElementFromModel(child));
             }
 
-            
-
-
-
-            Children.Clear();
-
-            //if (manager.Resources[_model.Style] is Style style)
-            //{
-            //    TemplateControl template = new TemplateControl(_model);
-            //    template.Style = style;
-            //    template.SetChildren();
-            //    behaviour.Initialize(template);
-            //    Children.Add(template);
-            //}
-            //else
-            //{
-            //    SetChildren();
-            //    behaviour.Initialize(this);
-            //}
-                
             behaviour.UpdateChildren();
         }
 
         public void SetChildren()
         {
-            //foreach (ILayoutObject child in _model.Children)
-            //{
-            //    if (child is ElementConfig conf)
-            //    {
-            //        if (conf.Type != _model.Type) throw new Exception("Config is not valide");
-            //        _model.Config = conf;
-            //    }
-            //    else
-            //        Children.Add(manager.UIElementFromModel(child));
-            //}
+            
         }
 
         private void OnLayoutUpdated(object sender, EventArgs e)

@@ -14,7 +14,7 @@ using System.Windows.Markup;
 namespace Instrument.Gui.Controls.FloatDock.Layout
 {
     [ContentProperty(nameof(Children))]
-    public class LayoutPanel : LayoutElement
+    public class LayoutPanel : LayoutElement, ILayoutAttachable
     {
         public LayoutPanel()
         {

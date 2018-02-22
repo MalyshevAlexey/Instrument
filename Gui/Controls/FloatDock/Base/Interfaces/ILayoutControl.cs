@@ -11,7 +11,6 @@ namespace Instrument.Gui.Controls.FloatDock.Base.Interfaces
     public interface ILayoutControl
     {
         LayoutObject Model { get; }
-        void SetChildren();
         IEnumerable Children { get; }
     }
 }

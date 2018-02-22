@@ -13,9 +13,16 @@ namespace Instrument.Gui.Controls.FloatDock.Controls
 {
     public class StyleControl : ItemsControl, ILayoutControl
     {
+        #region Varibles
+
+        IPanelBehaviour behaviour = null;
+
+        #endregion
+
         public StyleControl(LayoutElement model)
         {
             _model = model;
+            Style = _model?.Root?.Manager.Resources[_model.Style] as Style;
         }
 
         #region Model
@@ -28,16 +35,24 @@ namespace Instrument.Gui.Controls.FloatDock.Controls
 
         #endregion
 
-        public IEnumerable Children
+        protected override void OnInitialized(EventArgs e)
         {
-            get
-            {
-                return Items;
-            }
+            base.OnInitialized(e);
+            UpdateChildren();
         }
 
-        public void SetChildren()
+        private void UpdateChildren()
         {
+            var manager = _model?.Root?.Manager;
+            if (manager == null)
+                return;
+
+            behaviour = manager.BehaviourFromType(_model.Type) as IPanelBehaviour;
+            if (behaviour == null)
+                return;
+
+            behaviour.Initialize(this);
+            Items.Clear();
             foreach (ILayoutObject child in _model.Children)
             {
                 if (child is LayoutConfig conf)
@@ -46,18 +61,31 @@ namespace Instrument.Gui.Controls.FloatDock.Controls
                     _model.Config = conf;
                 }
                 else
-                    Items.Add(_model.Root.Manager.UIElementFromModel(child));
+                    Items.Add(manager.UIElementFromModel(child));
+            }
+
+            behaviour.UpdateChildren();
+        }
+
+        public IEnumerable Children
+        {
+            get
+            {
+                return Items;
             }
         }
 
         protected override Size MeasureOverride(Size availableSize)
         {
-            return availableSize;
+            return base.MeasureOverride(availableSize);
+            //return behaviour.MeasureOverride(availableSize);
+            //return availableSize;
         }
 
         protected override Size ArrangeOverride(Size finalSize)
         {
-            return finalSize;
+            return base.ArrangeOverride(finalSize);
+            //return behaviour.ArrangeOverride(finalSize);
         }
 
     }

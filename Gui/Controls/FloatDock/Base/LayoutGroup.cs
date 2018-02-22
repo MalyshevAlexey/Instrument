@@ -17,7 +17,7 @@ namespace Instrument.Gui.Controls.FloatDock.Base
     {
     }
 
-    public abstract class LayoutGroup<T> : LayoutObject, ILayoutGroup where T : ILayoutAttachable
+    public abstract class LayoutGroup<T> : LayoutObject, ILayoutGroup where T : ILayoutObject
     {
         #region Constructor
 

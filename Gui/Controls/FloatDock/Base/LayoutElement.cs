@@ -9,7 +9,7 @@ using System.Windows.Controls;
 
 namespace Instrument.Gui.Controls.FloatDock.Base
 {
-    public abstract class LayoutElement : LayoutGroup<ILayoutAttachable>, ILayoutElement
+    public abstract class LayoutElement : LayoutGroup<ILayoutObject>, ILayoutElement
     {
         #region Orientation
 

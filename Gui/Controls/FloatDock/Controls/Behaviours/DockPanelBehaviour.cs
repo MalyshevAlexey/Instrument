@@ -20,21 +20,19 @@ namespace Instrument.Gui.Controls.FloatDock.Controls.Behaviours
 
         public override Size MeasureOverride(Size availableSize)
         {
-            if (Control is StyleControl template) template.Measure(availableSize);
             foreach (UIElement child in Control.Children)
             {
                 child.Measure(availableSize);
             }
-            return new Size(availableSize.Width, 500);
+            return new Size(availableSize.Width, 300);
             //return availableSize;
         }
 
         public override Size ArrangeOverride(Size finalSize)
         {
-            if (Control is StyleControl template) template.Arrange(new Rect(finalSize));
             foreach (UIElement child in Control.Children)
             {
-                child.Arrange(new Rect(finalSize));
+                child.Arrange(new Rect(child.DesiredSize));
             }
             return finalSize;
         }

@@ -135,11 +135,18 @@ namespace Instrument.Gui.Controls.FloatDock
         {
             if (oldControl != null)
             {
-
+                //RemoveVisualChild(oldControl as Visual);
+                //RemoveLogicalChild(oldControl as Visual);
             }
             if (newControl != null)
             {
-                
+                //AddVisualChild(newControl as Visual);
+                //AddLogicalChild(newControl as Visual);
+            }
+            if (oldControl != null && newControl != null)
+            {
+                //RemoveLogicalChild(oldControl as Visual);
+                //AddLogicalChild(newControl as Visual);
             }
         }
 
@@ -193,6 +200,8 @@ namespace Instrument.Gui.Controls.FloatDock
                 return new PanelControl(panel);
             if (model is LayoutDocument doc)
                 return new DocumentControl(doc);
+            if (model is LayoutStyle style)
+                return new StyleControl(style);
 
             return null;
         }
@@ -216,8 +225,8 @@ namespace Instrument.Gui.Controls.FloatDock
 
         protected override void OnMouseRightButtonDown(MouseButtonEventArgs e)
         {
-            LogicalTreeDumper.Dump(this);
-            VisualTreeDumper.Dump(this);
+            //LogicalTreeDumper.Dump(this);
+            //VisualTreeDumper.Dump(this);
         }
 
         //protected override Size MeasureOverride(Size availableSize)
@@ -225,5 +234,10 @@ namespace Instrument.Gui.Controls.FloatDock
         //    AvailableSize = availableSize;
         //    return base.MeasureOverride(availableSize);
         //}
+
+        public override void OnApplyTemplate()
+        {
+            base.OnApplyTemplate();
+        }
     }
 }
