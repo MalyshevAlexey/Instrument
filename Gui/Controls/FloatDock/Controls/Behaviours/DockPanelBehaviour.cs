@@ -20,20 +20,59 @@ namespace Instrument.Gui.Controls.FloatDock.Controls.Behaviours
 
         public override Size MeasureOverride(Size availableSize)
         {
+            double availableWidth = availableSize.Width;
+            double availableHeight = availableSize.Height;
             foreach (UIElement child in Control.Children)
             {
-                child.Measure(availableSize);
+                double width = 0;
+                double height = 0;
+
+                if (Model.Orientation == Orientation.Horizontal)
+                {
+                    width = availableWidth / Control.ChildrenCount;
+                    height = availableHeight;
+                }
+                else if (Model.Orientation == Orientation.Vertical)
+                {
+                    width = availableWidth;
+                    height = availableHeight / Control.ChildrenCount;
+                }
+                child.Measure(new Size(width, height));
             }
-            return new Size(availableSize.Width, 300);
-            //return availableSize;
+            return availableSize;
+
+
+
+
+            //
+            //foreach (UIElement child in Control.Children)
+            //{
+            //    child.Measure(availableSize);
+            //}
+            //return new Size(availableSize.Width, 300);
+            ////return availableSize;
         }
 
         public override Size ArrangeOverride(Size finalSize)
         {
+            double x = 0;
+            double y = 0;
+            double finalWidth = finalSize.Width;
+            double finalHeight = finalSize.Height;
+
             foreach (UIElement child in Control.Children)
             {
-                child.Arrange(new Rect(child.DesiredSize));
+                child.Arrange(new Rect(new Point(x, y), child is SplitterControl ? new Size(5, finalHeight) : child.DesiredSize));
+                if (Model.Orientation == Orientation.Horizontal)
+                {
+                    x += child.DesiredSize.Width;
+                }
+                else if (Model.Orientation == Orientation.Vertical)
+                {
+                    y += child.DesiredSize.Height;
+                }
             }
+
             return finalSize;
         }
 

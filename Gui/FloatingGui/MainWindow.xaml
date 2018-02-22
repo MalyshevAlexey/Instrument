@@ -3,23 +3,31 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:gui="http://schemas.instrument.net/wpf/xaml/gui"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
-        Title="MainWindow" Height="635.5" Width="795.5">
+        Title="MainWindow" Height="796" Width="795.5">
 
     <gui:DockManager>
-        <gui:LayoutPanel Type="Dock" Style="Test" Tag="root">
-            <gui:LayoutPanel Style="Test2" Tag="First"/>
-            <gui:LayoutPanel Style="Test2" Tag="Second">
+        <gui:TestPanel Style="Test" Tag="root">
+            <gui:LayoutDocument>
+                <Button Content="Button1"/>
+            </gui:LayoutDocument>
+            <gui:LayoutDocument>
+                <Button Content="Button2"/>
+            </gui:LayoutDocument>
+            <gui:LayoutDocument>
+                <Button Content="Button3"/>
+            </gui:LayoutDocument>
+            <gui:TestPanel Orientation="Vertical" Style="Test" Tag="root">
                 <gui:LayoutDocument>
-                    <Button Content="Button1"/>
+                    <Button Content="Button444"/>
                 </gui:LayoutDocument>
                 <gui:LayoutDocument>
-                    <Button Content="Button2"/>
+                    <Button Content="Button5555"/>
                 </gui:LayoutDocument>
                 <gui:LayoutDocument>
-                    <Button Content="Button3"/>
+                    <Button Content="Button66666"/>
                 </gui:LayoutDocument>
-            </gui:LayoutPanel>
-        </gui:LayoutPanel>
+            </gui:TestPanel>
+        </gui:TestPanel>
 
 
         <!--<gui:LayoutPanel>

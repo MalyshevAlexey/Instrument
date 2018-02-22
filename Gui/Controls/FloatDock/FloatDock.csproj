@@ -56,6 +56,7 @@
     <Compile Include="Controls\PanelControl.cs" />
     <Compile Include="Controls\SplitterControl.cs" />
     <Compile Include="Controls\StyleControl.cs" />
+    <Compile Include="Controls\TestPanelControl.cs" />
     <Compile Include="DockManager.cs" />
     <Compile Include="Base\Interfaces\ILayoutContainer.cs" />
     <Compile Include="Base\Interfaces\ILayoutControl.cs" />
@@ -63,6 +64,7 @@
     <Compile Include="Base\Interfaces\ILayoutGroup.cs" />
     <Compile Include="Base\Interfaces\ILayoutRoot.cs" />
     <Compile Include="Base\LayoutConfig.cs" />
+    <Compile Include="Layout\TestPanel.cs" />
     <Compile Include="Layout\Enums\Dock.cs" />
     <Compile Include="Layout\Enums\Type.cs" />
     <Compile Include="Layout\LayoutConfigs\DockConfig.cs" />

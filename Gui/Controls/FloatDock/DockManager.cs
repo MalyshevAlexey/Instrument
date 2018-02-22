@@ -202,6 +202,8 @@ namespace Instrument.Gui.Controls.FloatDock
                 return new DocumentControl(doc);
             if (model is LayoutStyle style)
                 return new StyleControl(style);
+            if (model is TestPanel test)
+                return new TestPanelControl(test);
 
             return null;
         }
@@ -223,11 +225,11 @@ namespace Instrument.Gui.Controls.FloatDock
             }
         }
 
-        protected override void OnMouseRightButtonDown(MouseButtonEventArgs e)
-        {
-            //LogicalTreeDumper.Dump(this);
-            //VisualTreeDumper.Dump(this);
-        }
+        //protected override void OnMouseRightButtonDown(MouseButtonEventArgs e)
+        //{
+        //    LogicalTreeDumper.Dump(this);
+        //    VisualTreeDumper.Dump(this);
+        //}
 
         //protected override Size MeasureOverride(Size availableSize)
         //{

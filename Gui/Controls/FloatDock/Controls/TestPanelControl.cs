@@ -1,29 +1,26 @@
-﻿using Instrument.Gui.Controls.FloatDock.Base.Interfaces;
+﻿using Instrument.Gui.Controls.FloatDock.Base;
+using Instrument.Gui.Controls.FloatDock.Base.Interfaces;
+using Instrument.Gui.Controls.FloatDock.Layout;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using Instrument.Gui.Controls.FloatDock.Base;
-using System.Collections;
+using System.Windows.Threading;
 
 namespace Instrument.Gui.Controls.FloatDock.Controls
 {
-    public class StyleControl : ItemsControl, ILayoutControl
+    class TestPanelControl : ItemsControl, ILayoutControl
     {
         #region Varibles
 
         IPanelBehaviour behaviour = null;
+        public bool flag = true;
 
         #endregion
-
-        public StyleControl(LayoutElement model)
-        {
-            _model = model;
-            Style = _model?.Root?.Manager.Resources[_model.Style] as Style;
-        }
 
         #region Model
 
@@ -31,6 +28,25 @@ namespace Instrument.Gui.Controls.FloatDock.Controls
         public LayoutObject Model
         {
             get { return _model; }
+        }
+
+        #endregion
+
+        #region Constructor
+
+        public TestPanelControl(TestPanel model)
+        {
+            _model = model;
+            _model.PropertyChanged += (s, args) =>
+            {
+                Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    if (flag)
+                    {
+                        UpdateChildren();
+                    }
+                }), DispatcherPriority.Normal, null);
+            };
         }
 
         #endregion
@@ -46,6 +62,9 @@ namespace Instrument.Gui.Controls.FloatDock.Controls
             var manager = _model?.Root?.Manager;
             if (manager == null)
                 return;
+
+            if (manager.Resources[_model.Style] is Style style)
+                Style = style;
 
             behaviour = manager.BehaviourFromType(_model.Type) as IPanelBehaviour;
             if (behaviour == null)
@@ -64,6 +83,17 @@ namespace Instrument.Gui.Controls.FloatDock.Controls
                     Items.Add(manager.UIElementFromModel(child));
             }
 
+            FrameworkElementFactory factoryPanel = new FrameworkElementFactory(typeof(PanelControl));
+
+            factoryPanel.SetValue(PanelControl.ModelProperty, _model);
+
+            ItemsPanelTemplate template = new ItemsPanelTemplate();
+
+            template.VisualTree = factoryPanel;
+
+            ItemsPanel = template;
+
+
             behaviour.UpdateChildren();
         }
 
@@ -77,6 +107,11 @@ namespace Instrument.Gui.Controls.FloatDock.Controls
 
         public int ChildrenCount => Items.Count;
 
+        public void InternalMeasure(Size availableSize)
+        {
+            base.MeasureOverride(availableSize);
+        }
+
         protected override Size MeasureOverride(Size availableSize)
         {
             return base.MeasureOverride(availableSize);
@@ -89,6 +124,5 @@ namespace Instrument.Gui.Controls.FloatDock.Controls
             return base.ArrangeOverride(finalSize);
             //return behaviour.ArrangeOverride(finalSize);
         }
-
     }
 }

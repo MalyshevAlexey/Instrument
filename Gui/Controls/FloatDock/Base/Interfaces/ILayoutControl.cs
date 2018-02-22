@@ -12,5 +12,6 @@ namespace Instrument.Gui.Controls.FloatDock.Base.Interfaces
     {
         LayoutObject Model { get; }
         IEnumerable Children { get; }
+        int ChildrenCount { get; }
     }
 }

@@ -28,6 +28,13 @@ namespace Instrument.Gui.Controls.FloatDock.Controls
 
         #region Constructor
 
+        public PanelControl()
+        {
+
+        }
+
+
+
         public PanelControl(LayoutPanel model)
         {
             _model = model;
@@ -48,6 +55,30 @@ namespace Instrument.Gui.Controls.FloatDock.Controls
 
         #region Model
 
+        public static readonly DependencyProperty ModelProperty =
+            DependencyProperty.Register(nameof(Model), typeof(LayoutElement), typeof(PanelControl),
+                new FrameworkPropertyMetadata(null, OnModelChanged));
+
+        public LayoutElement Model1
+        {
+            get { return (LayoutElement)GetValue(ModelProperty); }
+            set { SetValue(ModelProperty, value); }
+        }
+
+        private static void OnModelChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            ((PanelControl)d).OnModelChanged(e);
+        }
+
+        protected virtual void OnModelChanged(DependencyPropertyChangedEventArgs e)
+        {
+            _model = e.NewValue as LayoutElement;
+        }
+
+        #endregion
+
+        #region Model
+
         LayoutElement _model;
         public LayoutObject Model
         {
@@ -58,11 +89,13 @@ namespace Instrument.Gui.Controls.FloatDock.Controls
 
         IEnumerable ILayoutControl.Children => Children;
 
+        public int ChildrenCount => Children.Count;
+
         protected override void OnInitialized(EventArgs e)
         {
             base.OnInitialized(e);
             UpdateChildren();
-            LayoutUpdated += new EventHandler(OnLayoutUpdated);
+            //LayoutUpdated += new EventHandler(OnLayoutUpdated);
         }
 
         private void UpdateChildren()
@@ -71,43 +104,12 @@ namespace Instrument.Gui.Controls.FloatDock.Controls
             if (manager == null)
                 return;
 
-            if (manager.Resources[_model.Style] is Style style)
-            {
-                LayoutStyle layoutStyle = new LayoutStyle(_model);
-                LayoutPanel panel = new LayoutPanel();
-                int count = _model.ChildrenCount;
-                for (int i = 0; i < count; i++)
-                    panel.Children.Add(_model.Children.First());
-                panel.Parent = layoutStyle;
-                panel.Type = _model.Type;
-                layoutStyle.Style = _model.Style;
-                layoutStyle.Children.Add(panel);
-                _model.Children.Add(layoutStyle);
-                //_model = layoutStyle;
-                behaviour = new StyledPanelBehaviour();
-                //behaviour.Initialize(this);
-            }
-            else
-            {
-                behaviour = manager.BehaviourFromType(_model.Type) as IPanelBehaviour;
-            }
+            behaviour = manager.BehaviourFromType(_model.Type) as IPanelBehaviour;
             
             if (behaviour == null)
                 return;
 
             behaviour.Initialize(this);
-            Children.Clear();  
-
-            foreach (ILayoutObject child in _model.Children)
-            {
-                if (child is LayoutConfig conf)
-                {
-                    if (conf.Type != _model.Type) throw new Exception("Config is not valide");
-                    _model.Config = conf;
-                }
-                else
-                    Children.Add(manager.UIElementFromModel(child));
-            }
 
             behaviour.UpdateChildren();
         }

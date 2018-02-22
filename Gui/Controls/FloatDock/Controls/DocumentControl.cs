@@ -79,7 +79,7 @@ namespace Instrument.Gui.Controls.FloatDock.Controls
         {
             base.OnInitialized(e);
             UpdateChildren();
-            LayoutUpdated += new EventHandler(OnLayoutUpdated);
+            //LayoutUpdated += new EventHandler(OnLayoutUpdated);
         }
 
         private void UpdateChildren()
@@ -144,7 +144,8 @@ namespace Instrument.Gui.Controls.FloatDock.Controls
         {
             //Console.WriteLine(availableSize.Width + " " + availableSize.Height);
             Content?.Measure(availableSize);
-            return new Size(availableSize.Width, 200);
+            return availableSize;
+            //return new Size(200, 100);
         }
 
         protected override Size ArrangeOverride(Size finalSize)
@@ -170,15 +171,22 @@ namespace Instrument.Gui.Controls.FloatDock.Controls
 
         public IEnumerable Children => throw new NotImplementedException();
 
+        public int ChildrenCount => 1;
+
         protected override void OnMouseRightButtonDown(MouseButtonEventArgs e)
         {
-            //VisualTreeDumper.Dump(this);
-            Console.WriteLine("pressed");
+            Console.WriteLine((Content as Button).Content);
             PanelControl panel = VisualTreeHelper.GetParent(this) as PanelControl;
+            //VisualTreeDumper.Dump(panel);
             panel.flag = true;
-            //_model?.Parent.flag = true;
             _model?.Parent.RemoveChild(_model);
-            //_model.Content = null;
+            panel.flag = false;
+        }
+
+        protected override void OnPreviewMouseLeftButtonDown(MouseButtonEventArgs e)
+        {
+            base.OnPreviewMouseRightButtonDown(e);
+            Console.WriteLine(this);
         }
     }
 }
